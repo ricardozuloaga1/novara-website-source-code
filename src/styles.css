@@ -1,24 +1,24 @@
 :root {
-  --ink: #12191d;
-  --white: #f8fafc;
+  --ink: #111814;
+  --white: #fafbf7;
   --surface: #ffffff;
-  --paper: #e6ecef;
-  --limestone: #f1f5f7;
-  --amber: #2dd4ff;
-  --steel: #a9bac4;
-  --moss: #c9d8d5;
-  --clay: #c4ccd6;
-  --deep: #111a20;
-  --on-deep: #f8fafc;
+  --paper: #e8eee7;
+  --limestone: #f3f6f1;
+  --amber: #32d583;
+  --steel: #aebbb4;
+  --moss: #c8d6cc;
+  --clay: #d4d0c4;
+  --deep: #101713;
+  --on-deep: #f8fbf7;
   --nav: var(--paper);
   --yellow: var(--amber);
   --blue: var(--steel);
   --green: var(--moss);
   --signal: var(--amber);
   --bulb: #ffd75a;
-  --line: rgba(18, 25, 29, 0.9);
-  --faint-line: rgba(18, 25, 29, 0.12);
-  --muted: rgba(18, 25, 29, 0.68);
+  --line: rgba(17, 24, 20, 0.9);
+  --faint-line: rgba(17, 24, 20, 0.12);
+  --muted: rgba(17, 24, 20, 0.68);
   --serif: Georgia, "Times New Roman", serif;
   --sans: Inter, Arial, sans-serif;
   color: var(--ink);
@@ -40,7 +40,7 @@ body {
   margin: 0;
   min-width: 320px;
   overflow-x: hidden;
-  background: #071115;
+  background: #07100c;
   color: var(--ink);
   font-family: var(--sans);
   font-size: 16px;
@@ -54,26 +54,26 @@ body {
 }
 
 .app-shell {
-  --ink: #e8f5fa;
-  --white: #071115;
-  --surface: #101b21;
-  --paper: #14242c;
-  --limestone: #0d1a20;
-  --amber: #16b9df;
-  --steel: #263f4b;
-  --moss: #1f3638;
-  --clay: #263544;
-  --deep: #05090c;
-  --on-deep: #f8fafc;
-  --line: rgba(232, 245, 250, 0.72);
-  --faint-line: rgba(232, 245, 250, 0.13);
-  --muted: rgba(232, 245, 250, 0.7);
+  --ink: #edf8ef;
+  --white: #07100c;
+  --surface: #101a14;
+  --paper: #15241b;
+  --limestone: #0d1912;
+  --amber: #24ba70;
+  --steel: #263a31;
+  --moss: #22392b;
+  --clay: #394037;
+  --deep: #050a07;
+  --on-deep: #f8fbf7;
+  --line: rgba(237, 248, 239, 0.72);
+  --faint-line: rgba(237, 248, 239, 0.13);
+  --muted: rgba(237, 248, 239, 0.7);
   --bulb: #ffd75a;
   min-height: 100vh;
   overflow-x: hidden;
   position: relative;
   background:
-    linear-gradient(180deg, rgba(9, 19, 24, 0.94), rgba(5, 9, 12, 0.98)),
+    linear-gradient(180deg, rgba(8, 18, 12, 0.94), rgba(5, 10, 7, 0.98)),
     var(--white);
   color: var(--ink);
   transition:
@@ -87,9 +87,9 @@ body {
   z-index: 3;
   pointer-events: none;
   background:
-    linear-gradient(104deg, transparent 8%, rgba(45, 212, 255, 0.16) 28%, transparent 49%),
-    linear-gradient(252deg, transparent 22%, rgba(16, 185, 223, 0.12) 43%, transparent 67%),
-    linear-gradient(18deg, transparent 12%, rgba(116, 226, 255, 0.08) 36%, transparent 58%);
+    linear-gradient(104deg, transparent 8%, rgba(50, 213, 131, 0.16) 28%, transparent 49%),
+    linear-gradient(252deg, transparent 22%, rgba(36, 186, 112, 0.12) 43%, transparent 67%),
+    linear-gradient(18deg, transparent 12%, rgba(167, 243, 208, 0.08) 36%, transparent 58%);
   filter: blur(38px);
   opacity: 0.18;
   mix-blend-mode: screen;
@@ -99,23 +99,23 @@ body {
 }
 
 .app-shell.light-on {
-  --ink: #12191d;
-  --white: #f8fafc;
+  --ink: #111814;
+  --white: #fafbf7;
   --surface: #ffffff;
-  --paper: #e8eef2;
-  --limestone: #f3f7fa;
-  --amber: #2dd4ff;
-  --steel: #b7c8d1;
-  --moss: #d1dfdd;
-  --clay: #c9d2dd;
-  --deep: #0f1720;
+  --paper: #e9f0e8;
+  --limestone: #f4f7f2;
+  --amber: #32d583;
+  --steel: #b9c7c0;
+  --moss: #d2dfd4;
+  --clay: #dad6c9;
+  --deep: #0f1712;
   --on-deep: #ffffff;
-  --line: rgba(18, 25, 29, 0.82);
-  --faint-line: rgba(18, 25, 29, 0.09);
-  --muted: rgba(18, 25, 29, 0.64);
+  --line: rgba(17, 24, 20, 0.82);
+  --faint-line: rgba(17, 24, 20, 0.09);
+  --muted: rgba(17, 24, 20, 0.64);
   --bulb: #ffd75a;
   background:
-    radial-gradient(circle at 82% 20%, rgba(45, 212, 255, 0.24), transparent 28%),
+    radial-gradient(circle at 82% 20%, rgba(50, 213, 131, 0.24), transparent 28%),
     radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.72), transparent 48%),
     var(--white);
 }
@@ -228,7 +228,7 @@ input {
   border-radius: 6px;
   background: var(--amber);
   color: #061116;
-  box-shadow: inset 0 0 0 1px rgba(18, 25, 29, 0.08), 0 0 0 rgba(45, 212, 255, 0);
+  box-shadow: inset 0 0 0 1px rgba(17, 24, 20, 0.08), 0 0 0 rgba(50, 213, 131, 0);
   font-size: 14px;
   font-weight: 400;
   line-height: 24px;
