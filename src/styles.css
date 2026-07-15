@@ -84,13 +84,13 @@ body {
 .app-shell::before,
 .app-shell::after {
   position: fixed;
-  inset: -20vh -18vw;
   z-index: 3;
   pointer-events: none;
   content: "";
 }
 
 .app-shell::before {
+  inset: -20vh -18vw;
   background:
     linear-gradient(104deg, transparent 4%, rgba(50, 213, 131, 0.22) 20%, transparent 42%),
     linear-gradient(252deg, transparent 20%, rgba(36, 186, 112, 0.16) 44%, transparent 70%),
@@ -106,16 +106,23 @@ body {
 }
 
 .app-shell::after {
-  inset: -14vh -10vw;
-  background:
-    radial-gradient(ellipse at 18% 28%, rgba(50, 213, 131, 0.18), transparent 38%),
-    radial-gradient(ellipse at 70% 62%, rgba(74, 222, 128, 0.12), transparent 42%),
-    radial-gradient(ellipse at 45% 86%, rgba(187, 247, 208, 0.08), transparent 36%);
-  filter: blur(58px);
-  opacity: 0.28;
+  top: 8vh;
+  left: -34vw;
+  width: 72vw;
+  height: 44vh;
+  border-radius: 999px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(50, 213, 131, 0.46) 0%,
+    rgba(36, 186, 112, 0.22) 34%,
+    rgba(20, 83, 45, 0.1) 58%,
+    transparent 74%
+  );
+  filter: blur(74px);
+  opacity: 0.44;
   mix-blend-mode: screen;
-  transform: translate3d(7%, -1%, 0) scale(1.04);
-  animation: signal-drift 13s ease-in-out infinite alternate;
+  transform: translate3d(0, 0, 0) rotate(-8deg);
+  animation: signal-blob-flow 10s ease-in-out infinite alternate;
   will-change: transform;
 }
 
@@ -147,8 +154,8 @@ body {
 }
 
 .app-shell.light-on::after {
-  opacity: 0.08;
-  filter: blur(68px);
+  opacity: 0.16;
+  filter: blur(88px);
 }
 
 @keyframes signal-wave {
@@ -168,17 +175,17 @@ body {
   }
 }
 
-@keyframes signal-drift {
+@keyframes signal-blob-flow {
   0% {
-    transform: translate3d(8%, -1%, 0) scale(1.04) rotate(-2deg);
+    transform: translate3d(0, 0, 0) scale(1) rotate(-8deg);
   }
 
-  50% {
-    transform: translate3d(-8%, 5%, 0) scale(1.12) rotate(3deg);
+  45% {
+    transform: translate3d(58vw, 12vh, 0) scale(1.2) rotate(6deg);
   }
 
   100% {
-    transform: translate3d(10%, -4%, 0) scale(1.06) rotate(-3deg);
+    transform: translate3d(116vw, -3vh, 0) scale(0.96) rotate(-4deg);
   }
 }
 
