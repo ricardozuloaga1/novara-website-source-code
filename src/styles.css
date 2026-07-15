@@ -98,10 +98,11 @@ body {
   background-position: 0% 45%, 100% 56%, 22% 72%;
   background-size: 130% 100%, 145% 115%, 120% 95%;
   filter: blur(44px);
-  opacity: 0.26;
+  opacity: 0.36;
   mix-blend-mode: screen;
-  transform: translate3d(-3%, -2%, 0) skewY(-7deg);
-  animation: signal-wave 18s ease-in-out infinite alternate;
+  transform: translate3d(-9%, -3%, 0) skewY(-9deg);
+  animation: signal-wave 9s ease-in-out infinite alternate;
+  will-change: background-position, transform;
 }
 
 .app-shell::after {
@@ -111,10 +112,11 @@ body {
     radial-gradient(ellipse at 70% 62%, rgba(74, 222, 128, 0.12), transparent 42%),
     radial-gradient(ellipse at 45% 86%, rgba(187, 247, 208, 0.08), transparent 36%);
   filter: blur(58px);
-  opacity: 0.2;
+  opacity: 0.28;
   mix-blend-mode: screen;
-  transform: translate3d(2%, 0, 0) scale(1.02);
-  animation: signal-drift 24s ease-in-out infinite alternate;
+  transform: translate3d(7%, -1%, 0) scale(1.04);
+  animation: signal-drift 13s ease-in-out infinite alternate;
+  will-change: transform;
 }
 
 .app-shell.light-on {
@@ -151,32 +153,32 @@ body {
 
 @keyframes signal-wave {
   0% {
-    background-position: 0% 45%, 100% 56%, 22% 72%;
-    transform: translate3d(-4%, -2%, 0) skewY(-7deg) scale(1);
+    background-position: -18% 44%, 116% 58%, 12% 76%;
+    transform: translate3d(-10%, -3%, 0) skewY(-9deg) scale(1);
   }
 
   50% {
-    background-position: 58% 50%, 42% 48%, 80% 58%;
-    transform: translate3d(3%, 1%, 0) skewY(-3deg) scale(1.04);
+    background-position: 76% 52%, 28% 45%, 96% 54%;
+    transform: translate3d(6%, 2%, 0) skewY(-2deg) scale(1.08);
   }
 
   100% {
-    background-position: 100% 42%, 0% 60%, 34% 38%;
-    transform: translate3d(6%, -1%, 0) skewY(-8deg) scale(1.02);
+    background-position: 124% 40%, -20% 62%, 36% 32%;
+    transform: translate3d(12%, -2%, 0) skewY(-10deg) scale(1.03);
   }
 }
 
 @keyframes signal-drift {
   0% {
-    transform: translate3d(2%, 0, 0) scale(1.02) rotate(-1deg);
+    transform: translate3d(8%, -1%, 0) scale(1.04) rotate(-2deg);
   }
 
   50% {
-    transform: translate3d(-3%, 3%, 0) scale(1.08) rotate(2deg);
+    transform: translate3d(-8%, 5%, 0) scale(1.12) rotate(3deg);
   }
 
   100% {
-    transform: translate3d(4%, -2%, 0) scale(1.04) rotate(-2deg);
+    transform: translate3d(10%, -4%, 0) scale(1.06) rotate(-3deg);
   }
 }
 
