@@ -81,21 +81,40 @@ body {
     color 0.8s ease;
 }
 
-.app-shell::before {
+.app-shell::before,
+.app-shell::after {
   position: fixed;
   inset: -20vh -18vw;
   z-index: 3;
   pointer-events: none;
+  content: "";
+}
+
+.app-shell::before {
   background:
-    linear-gradient(104deg, transparent 8%, rgba(50, 213, 131, 0.16) 28%, transparent 49%),
-    linear-gradient(252deg, transparent 22%, rgba(36, 186, 112, 0.12) 43%, transparent 67%),
-    linear-gradient(18deg, transparent 12%, rgba(167, 243, 208, 0.08) 36%, transparent 58%);
-  filter: blur(38px);
-  opacity: 0.18;
+    linear-gradient(104deg, transparent 4%, rgba(50, 213, 131, 0.22) 20%, transparent 42%),
+    linear-gradient(252deg, transparent 20%, rgba(36, 186, 112, 0.16) 44%, transparent 70%),
+    linear-gradient(18deg, transparent 12%, rgba(167, 243, 208, 0.1) 36%, transparent 58%);
+  background-position: 0% 45%, 100% 56%, 22% 72%;
+  background-size: 130% 100%, 145% 115%, 120% 95%;
+  filter: blur(44px);
+  opacity: 0.26;
   mix-blend-mode: screen;
   transform: translate3d(-3%, -2%, 0) skewY(-7deg);
   animation: signal-wave 18s ease-in-out infinite alternate;
-  content: "";
+}
+
+.app-shell::after {
+  inset: -14vh -10vw;
+  background:
+    radial-gradient(ellipse at 18% 28%, rgba(50, 213, 131, 0.18), transparent 38%),
+    radial-gradient(ellipse at 70% 62%, rgba(74, 222, 128, 0.12), transparent 42%),
+    radial-gradient(ellipse at 45% 86%, rgba(187, 247, 208, 0.08), transparent 36%);
+  filter: blur(58px);
+  opacity: 0.2;
+  mix-blend-mode: screen;
+  transform: translate3d(2%, 0, 0) scale(1.02);
+  animation: signal-drift 24s ease-in-out infinite alternate;
 }
 
 .app-shell.light-on {
@@ -121,21 +140,43 @@ body {
 }
 
 .app-shell.light-on::before {
-  opacity: 0.1;
+  opacity: 0.12;
   filter: blur(52px);
+}
+
+.app-shell.light-on::after {
+  opacity: 0.08;
+  filter: blur(68px);
 }
 
 @keyframes signal-wave {
   0% {
+    background-position: 0% 45%, 100% 56%, 22% 72%;
     transform: translate3d(-4%, -2%, 0) skewY(-7deg) scale(1);
   }
 
   50% {
+    background-position: 58% 50%, 42% 48%, 80% 58%;
     transform: translate3d(3%, 1%, 0) skewY(-3deg) scale(1.04);
   }
 
   100% {
+    background-position: 100% 42%, 0% 60%, 34% 38%;
     transform: translate3d(6%, -1%, 0) skewY(-8deg) scale(1.02);
+  }
+}
+
+@keyframes signal-drift {
+  0% {
+    transform: translate3d(2%, 0, 0) scale(1.02) rotate(-1deg);
+  }
+
+  50% {
+    transform: translate3d(-3%, 3%, 0) scale(1.08) rotate(2deg);
+  }
+
+  100% {
+    transform: translate3d(4%, -2%, 0) scale(1.04) rotate(-2deg);
   }
 }
 
@@ -147,7 +188,8 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .app-shell::before {
+  .app-shell::before,
+  .app-shell::after {
     animation: none;
   }
 }
