@@ -386,7 +386,7 @@ function HowToStart() {
       </div>
       <div className="intro-grid">
         <div>
-          <h3>From messy potential to meaningful opportunity</h3>
+          <h3>From raw capability to meaningful opportunity</h3>
           <p>
             Novara is building the operating layer for a world where information is abundant and
             judgment is scarce.
