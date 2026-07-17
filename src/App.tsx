@@ -3,66 +3,60 @@ import { useEffect, useRef, useState } from "react";
 const capabilityPaths = [
   {
     title: "Judgment",
-    body: "Evaluate ambiguous situations, make tradeoffs, and choose what matters when information is abundant but consequences are uneven.",
+    body: "Makes good calls when the answer is not obvious.",
     color: "var(--paper)",
   },
   {
-    title: "Structural Understanding",
-    body: "See systems beneath surface facts: incentives, bottlenecks, dependencies, and the shape of durable capability.",
+    title: "Systems Thinking",
+    body: "Sees the incentives, bottlenecks, and second-order effects.",
     color: "var(--amber)",
   },
   {
-    title: "Long-term Cognition",
-    body: "Reason across years rather than quarters, keeping compounding effects and institutional memory in view.",
+    title: "Long-term Thinking",
+    body: "Can reason across years, not only quarters.",
     color: "var(--steel)",
   },
   {
     title: "Human-AI Collaboration",
-    body: "Use AI as leverage without outsourcing agency, taste, responsibility, or strategic judgment.",
+    body: "Uses AI as leverage without outsourcing responsibility.",
     color: "var(--moss)",
-  },
-  {
-    title: "City Nodes",
-    body: "Local expansion paths for convening talent, partners, and applied capability in specific regions.",
-    color: "var(--limestone)",
-  },
-  {
-    title: "Strategic Partners",
-    body: "Organizations looking for high-judgment people, research capacity, and capability infrastructure.",
-    color: "var(--clay)",
   },
 ];
 
 const tracks = [
   {
-    title: "Capability Assessment",
-    meta: "Structured signals · Applied work · Judgment review",
-    body:
-      "A process for making rare judgment, structural understanding, and long-term cognition visible without reducing people to credentials.",
+    title: "Assess",
+    meta: "Capability signals",
+    body: "Understand how someone thinks, decides, and learns.",
   },
   {
-    title: "Network Routing",
-    meta: "People · Partners · Roles · Events",
-    body:
-      "A high-potential network and opportunity layer connecting exceptional capability to work, research, summits, and strategic partners.",
+    title: "Connect",
+    meta: "Trusted network",
+    body: "Bring high-potential people and serious partners into the same system.",
+  },
+  {
+    title: "Route",
+    meta: "Opportunities",
+    body: "Match capability to roles, research, partners, and long-term work.",
   },
 ];
 
 const happens = [
   {
-    title: "Talent Density",
-    body:
-      "Novara is designed around people whose value is not captured by ordinary credentials: high-agency builders, researchers, operators, and strategic thinkers with unusual judgment.",
+    title: "Exceptional candidates",
+    body: "Get assessed for judgment, structural thinking, and long-term capability.",
   },
   {
-    title: "Capability Review",
-    body:
-      "Assessment focuses on evidence, work samples, decisions under uncertainty, and structural understanding rather than vague self-description.",
+    title: "Strategic partners",
+    body: "Find people and programs aligned with serious capability needs.",
   },
   {
-    title: "Partner Collaboration",
-    body:
-      "City partners, strategic partners, researchers, and contributors plug into different parts of the network instead of being pushed through one generic funnel.",
+    title: "Researchers and builders",
+    body: "Contribute to assessment, learning theory, and human-AI collaboration.",
+  },
+  {
+    title: "City and ecosystem leads",
+    body: "Build local nodes without making city partnerships the whole story.",
   },
 ];
 
@@ -214,8 +208,8 @@ function Hero() {
     <section className="hero-section" id="top">
       <h1>Novara helps exceptional judgment find its place in the AI era</h1>
       <p>
-        Novara is a global capability network for people and partners working where AI makes
-        information abundant and judgment becomes scarce.
+        We identify, connect, and support people with rare judgment, structural understanding,
+        and long-term thinking.
       </p>
       <a className="outline-cta" href="#system">
         <span>Explore the system</span>
@@ -388,14 +382,14 @@ function HowToStart() {
   return (
     <section className="spc-section how-section" id="system">
       <div className="section-label">
-        <h2>How to start</h2>
+        <h2>The system</h2>
       </div>
       <div className="intro-grid">
         <div>
-          <h3>Building at the capability frontier? Novara helps at every step</h3>
+          <h3>From messy potential to meaningful opportunity</h3>
           <p>
-            The path from ability to meaningful opportunity is rarely straight. Novara gives
-            exceptional people and partners a clearer way to be assessed, connected, and routed.
+            Novara is building the operating layer for a world where information is abundant and
+            judgment is scarce.
           </p>
         </div>
         <div className="system-object" ref={objectRef} aria-hidden="true">
@@ -480,7 +474,7 @@ function CapabilityPaths() {
   return (
     <section className="spc-section paths-section" id="network">
       <div className="section-label">
-        <h2>Capability paths</h2>
+        <h2>What we look for</h2>
       </div>
       <div className="paths-grid" ref={gridRef}>
         {capabilityPaths.map((path, index) => (
@@ -502,7 +496,7 @@ function CapabilityPaths() {
       </div>
       <div className="center-cta compact">
         <a className="outline-cta" href="#tracks">
-          See the framework
+          Choose a path
         </a>
       </div>
     </section>
@@ -514,14 +508,12 @@ function WhatHappens() {
     <section className="happens-section" id="tracks">
       <div className="happens-inner">
         <aside>
-          <p>What happens at Novara</p>
+          <p>Who it is for</p>
           <ol>
-            <li>Talent Density</li>
-            <li>Capability Review</li>
-            <li>Learning Forums</li>
-            <li>Partner Collaboration</li>
-            <li>Global Summits</li>
-            <li>Apply to Novara</li>
+            <li>Candidates</li>
+            <li>Partners</li>
+            <li>Builders</li>
+            <li>City nodes</li>
           </ol>
         </aside>
         <div className="happens-content">
@@ -545,10 +537,9 @@ function TeamSection() {
           <h2>Team</h2>
         </div>
         <div className="team-heading">
-          <h2>Built by operators, researchers, and partners focused on capability infrastructure</h2>
+          <h2>A serious company behind the network</h2>
           <p>
-            Novara needs to feel like an operating company, not only a network concept. This
-            section is a placeholder for the people and stewardship structure behind the system.
+            Placeholder for the team, advisors, and operating structure that make Novara credible.
           </p>
         </div>
         <div className="team-grid">
@@ -584,10 +575,10 @@ function JobApplications() {
           <h2>Apply for a job</h2>
         </div>
         <div className="jobs-heading">
-          <h2>Current role tracks are reviewed separately from network onboarding</h2>
+          <h2>Open tracks for people who want to build the system</h2>
           <p>
-            Novara has a general intake path for candidates, partners, and contributors.
-            Job applications should route through a more specific role review process.
+            Job interest is separate from general network onboarding. Selected roles are reviewed
+            through a structured process.
           </p>
         </div>
         <div className="jobs-grid">

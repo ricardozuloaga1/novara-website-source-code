@@ -571,14 +571,14 @@ input {
 
 .track-cards {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 24px;
   padding-top: 12px;
 }
 
 .track-card {
   display: flex;
-  min-height: 225px;
+  min-height: 205px;
   flex-direction: column;
   padding: 32px;
   border: 1px solid var(--ink);
@@ -594,10 +594,10 @@ input {
 .track-card h3 {
   margin: 0 0 8px;
   font-family: var(--serif);
-  font-size: 36px;
+  font-size: 40px;
   font-weight: 400;
   letter-spacing: 0.36px;
-  line-height: 41px;
+  line-height: 44px;
 }
 
 .track-card p {
@@ -628,7 +628,7 @@ input {
 
 .paths-grid {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 16px;
   margin: 40px 0;
 }
@@ -712,7 +712,7 @@ input {
 .happens-inner {
   display: grid;
   width: min(1200px, calc(100% - 40px));
-  grid-template-columns: 340px minmax(0, 1fr);
+  grid-template-columns: 300px minmax(0, 1fr);
   gap: 72px;
   margin-top: 40px;
 }
@@ -742,9 +742,9 @@ input {
 }
 
 .happens-content {
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px;
   padding-bottom: 36px;
 }
 
@@ -762,9 +762,10 @@ input {
 }
 
 .happens-content p {
+  max-width: 390px;
   margin: 0;
-  font-size: 17px;
-  line-height: 28px;
+  font-size: 16px;
+  line-height: 26px;
 }
 
 .team-section {
