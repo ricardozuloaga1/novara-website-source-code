@@ -143,7 +143,7 @@ const easeInOutQuad = (value: number) =>
   value < 0.5 ? 2 * value * value : 1 - Math.pow(-2 * value + 2, 2) / 2;
 
 const squigglePathData =
-  "M-20 221 C39 221 77 222 117 216 C78 129 135 58 208 76 C295 96 287 204 215 215 C147 225 124 170 162 143 C207 112 256 172 220 235 C187 292 98 306 126 247 C151 194 249 182 282 219 C322 264 258 344 204 337 C136 329 99 243 153 204 C217 157 297 175 316 237 C334 296 269 343 233 296 C199 252 260 203 310 173 C363 141 404 103 448 122 C492 141 468 220 446 271 C426 317 474 322 499 277 C529 223 538 119 596 60 C643 10 698 19 694 98 C689 188 596 260 585 328 C574 389 659 394 711 338 C746 301 676 276 679 229 C682 178 741 109 790 130 C842 152 806 246 777 276 C742 312 816 332 842 282 C864 241 852 202 878 205 C901 208 887 277 902 311 C920 352 984 344 965 286 C949 236 886 180 908 145 C936 101 1017 142 1039 200 C1066 273 1102 309 1172 286 C1232 266 1242 202 1281 202 C1320 202 1297 277 1329 299 C1374 329 1448 295 1484 244 C1519 206 1578 207 1646 207 C1712 207 1778 207 1878 207";
+  "M-20 221 C39 221 77 222 117 216 C78 129 135 58 208 76 C295 96 287 204 215 215 C147 225 124 170 162 143 C207 112 256 172 220 235 C187 292 98 306 126 247 C151 194 249 182 282 219 C322 264 258 344 204 337 C136 329 99 243 153 204 C217 157 297 175 316 237 C334 296 269 343 233 296 C199 252 260 203 310 173 C363 141 404 103 448 122 C492 141 468 220 446 271 C426 317 474 322 499 277 C529 223 538 119 596 60 C643 10 698 19 694 98 C689 188 596 260 585 328 C574 389 659 394 711 338 C746 301 676 276 679 229 C682 178 741 109 790 130 C842 152 806 246 777 276 C742 312 816 332 842 282 C864 241 852 202 878 205 C901 208 887 277 902 311 C920 352 984 344 965 286 C949 236 886 180 908 145 C936 101 1017 142 1039 200 C1066 273 1102 309 1172 286 C1232 266 1242 202 1281 202 C1320 202 1297 277 1329 299 C1374 329 1448 295 1484 244 C1519 206 1578 207 1646 207 C1712 207 1768 207 1858 207";
 
 const pathSpreadOffsets = [-120, -72, -28, 28, 72, 120];
 const pathVerticalOffsets = [16, -10, 12, -12, 10, -16];
@@ -227,19 +227,20 @@ function Hero() {
 
 function SquiggleLine({ onLightChange }: { onLightChange: (isOn: boolean) => void }) {
   const sectionRef = useRef<HTMLElement | null>(null);
-  const revealRef = useRef<SVGRectElement | null>(null);
+  const pathRef = useRef<SVGPathElement | null>(null);
   const lastLightStateRef = useRef(false);
 
   useEffect(() => {
     const section = sectionRef.current;
-    const reveal = revealRef.current;
-    if (!section || !reveal) return;
+    const path = pathRef.current;
+    if (!section || !path) return;
 
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const revealStart = -40;
-    const revealEnd = 1878;
-    const revealWidth = revealEnd - revealStart;
+    const pathLength = path.getTotalLength();
     let frame = 0;
+
+    path.style.strokeDasharray = `${pathLength}`;
+    path.style.strokeDashoffset = `${pathLength}`;
 
     const render = () => {
       const viewportHeight = window.innerHeight || 1;
@@ -249,13 +250,23 @@ function SquiggleLine({ onLightChange }: { onLightChange: (isOn: boolean) => voi
       const baseEndScroll = sectionTop + sectionHeight * 0.7;
       const endScroll = startScroll + (baseEndScroll - startScroll) / 2.16;
       const scrollRange = Math.max(1, endScroll - startScroll);
-      const rawProgress = reduceMotion
-        ? 1
-        : (window.scrollY - startScroll) / scrollRange;
+      const viewportWidth = window.innerWidth || window.visualViewport?.width || 1;
+      const viewportToScreenRatio = viewportWidth / Math.max(1, window.screen.width);
+      const shouldResolveWideLayout = viewportWidth >= 2200 || viewportToScreenRatio >= 1.7;
+      const rawProgress = (window.scrollY - startScroll) / scrollRange;
       const progress = Math.max(0, Math.min(1, rawProgress));
-      const visualProgress = progress >= 0.985 ? 1 : progress;
+      const visualProgress = reduceMotion || shouldResolveWideLayout
+        ? 1
+        : progress >= 0.985 ? 1 : progress;
+      const activeLength = pathLength * visualProgress;
 
-      reveal.setAttribute("width", `${revealWidth * visualProgress}`);
+      if (shouldResolveWideLayout) {
+        path.style.strokeDasharray = "none";
+        path.style.strokeDashoffset = "0";
+      } else {
+        path.style.strokeDasharray = `${pathLength}`;
+        path.style.strokeDashoffset = `${pathLength - activeLength}`;
+      }
       const isLightOn = visualProgress >= 1;
       section.classList.toggle("is-complete", isLightOn);
 
@@ -288,18 +299,13 @@ function SquiggleLine({ onLightChange }: { onLightChange: (isOn: boolean) => voi
   return (
     <section className="squiggle-section" ref={sectionRef} aria-hidden="true">
       <svg className="squiggle-line" fill="none" viewBox="0 0 2110 415">
-        <defs>
-          <clipPath id="squiggle-progress-clip">
-            <rect ref={revealRef} x="-40" y="-80" width="0" height="600" />
-          </clipPath>
-        </defs>
         <path
           className="squiggle-guide"
           d={squigglePathData}
         />
         <path
           className="squiggle-path"
-          clipPath="url(#squiggle-progress-clip)"
+          ref={pathRef}
           d={squigglePathData}
         />
         <g className="squiggle-target-mark">
@@ -309,12 +315,14 @@ function SquiggleLine({ onLightChange }: { onLightChange: (isOn: boolean) => voi
         <g transform="translate(1944 206)">
           <g className="squiggle-bulb">
             <circle className="bulb-halo" cx="0" cy="0" r="66" />
-            <path
-              className="bulb-glass"
-              d="M-31 -11 C-31 -34 -15 -51 8 -51 C31 -51 48 -34 48 -10 C48 5 41 17 30 28 C22 36 20 43 20 52 L-3 52 C-3 42 -7 36 -15 28 C-25 18 -31 5 -31 -11 Z"
-            />
-            <path className="bulb-filament" d="M-8 7 C-1 -2 7 -2 14 7" />
-            <path className="bulb-base" d="M-5 52 L21 52 M-2 64 L18 64 M2 76 L14 76" />
+            <g className="bulb-inner">
+              <path
+                className="bulb-glass"
+                d="M-31 -11 C-31 -34 -15 -51 8 -51 C31 -51 48 -34 48 -10 C48 5 41 17 30 28 C22 36 20 43 20 52 L-3 52 C-3 42 -7 36 -15 28 C-25 18 -31 5 -31 -11 Z"
+              />
+              <path className="bulb-filament" d="M-8 7 C-1 -2 7 -2 14 7" />
+              <path className="bulb-base" d="M-5 52 L21 52 M-2 64 L18 64 M2 76 L14 76" />
+            </g>
             <path className="bulb-ray" d="M0 -82 L0 -108 M59 -59 L78 -78 M82 0 L108 0 M59 59 L78 78 M-59 -59 L-78 -78 M-82 0 L-108 0 M-59 59 L-78 78" />
           </g>
         </g>
