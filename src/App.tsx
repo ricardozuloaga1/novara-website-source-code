@@ -403,8 +403,9 @@ function HowToStart() {
         </div>
       </div>
       <div className="track-cards">
-        {tracks.map((track) => (
+        {tracks.map((track, index) => (
           <a className="track-card" href="#apply" key={track.title}>
+            <span className="track-number">{String(index + 1).padStart(2, "0")}</span>
             <h3>{track.title}</h3>
             <p className="meta">{track.meta}</p>
             <p>{track.body}</p>
