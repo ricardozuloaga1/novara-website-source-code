@@ -608,28 +608,18 @@ input {
   background:
     linear-gradient(145deg, rgba(255, 255, 255, 0.32), transparent 52%),
     color-mix(in srgb, var(--moss) 84%, var(--signal));
-  transform: translateY(18px);
 }
 
 .track-card:nth-child(3) {
   background:
     linear-gradient(145deg, rgba(255, 255, 255, 0.24), transparent 52%),
     color-mix(in srgb, var(--signal) 68%, var(--moss));
-  transform: translateY(36px);
 }
 
 .track-card:hover {
   border-color: color-mix(in srgb, var(--signal) 54%, var(--ink));
   box-shadow: 0 14px 0 rgba(18, 25, 29, 0.08), 0 0 30px rgba(50, 213, 131, 0.16);
   transform: translateY(-4px);
-}
-
-.track-card:nth-child(2):hover {
-  transform: translateY(12px);
-}
-
-.track-card:nth-child(3):hover {
-  transform: translateY(30px);
 }
 
 .track-card:not(:last-child)::after {
@@ -1452,11 +1442,7 @@ input:focus-visible {
     display: none;
   }
 
-  .track-card:nth-child(2),
-  .track-card:nth-child(3),
-  .track-card:hover,
-  .track-card:nth-child(2):hover,
-  .track-card:nth-child(3):hover {
+  .track-card:hover {
     transform: none;
   }
 
