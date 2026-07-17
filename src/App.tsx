@@ -557,9 +557,6 @@ function TeamSection() {
   return (
     <section className="team-section" id="team">
       <div className="team-inner">
-        <div className="section-label">
-          <h2>Team</h2>
-        </div>
         <div className="team-heading">
           <h2>The operating team behind the network</h2>
           <p>
