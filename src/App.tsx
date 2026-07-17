@@ -65,25 +65,25 @@ const teamAreas = [
     label: "Founding team",
     title: "Company stewardship",
     body:
-      "Placeholder for the public founding team, operating owners, and company-level accountability.",
+      "Owns Novara's direction, operating standards, and long-term accountability.",
   },
   {
     label: "Capability design",
     title: "Research and assessment",
     body:
-      "Placeholder for people shaping judgment review, capability signals, and learning theory.",
+      "Shapes judgment review, capability signals, learning theory, and human-AI evaluation.",
   },
   {
     label: "Network growth",
     title: "Partnerships and ecosystem",
     body:
-      "Placeholder for city partners, strategic partners, and regional network builders.",
+      "Builds the partner network across institutions, cities, strategic partners, and regional leads.",
   },
   {
     label: "Programs",
     title: "Operations and execution",
     body:
-      "Placeholder for the team running events, candidate flow, summits, and partner programs.",
+      "Runs candidate flow, partner programs, summits, and the execution layer behind the network.",
   },
 ];
 
