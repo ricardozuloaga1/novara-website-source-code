@@ -561,9 +561,9 @@ function TeamSection() {
           <h2>Team</h2>
         </div>
         <div className="team-heading">
-          <h2>A serious company behind the network</h2>
+          <h2>The operating team behind the network</h2>
           <p>
-            Placeholder for the team, advisors, and operating structure that make Novara credible.
+            People accountable for capability design, partner trust, and long-term execution.
           </p>
         </div>
         <div className="team-grid">
@@ -575,13 +575,6 @@ function TeamSection() {
               <span>{area.body}</span>
             </article>
           ))}
-        </div>
-        <div className="team-note">
-          <p>Editable placeholder</p>
-          <span>
-            Public team profiles, advisor names, photos, and confirmed partner affiliations are
-            being finalized before publication.
-          </span>
         </div>
       </div>
     </section>
@@ -704,14 +697,14 @@ function PageHero({
   title,
   body,
 }: {
-  eyebrow: string;
+  eyebrow?: string;
   title: string;
   body: string;
 }) {
   return (
     <section className="page-hero">
       <div className="page-hero-inner">
-        <p>{eyebrow}</p>
+        {eyebrow ? <p>{eyebrow}</p> : null}
         <h1>{title}</h1>
         <span>{body}</span>
       </div>
@@ -756,7 +749,6 @@ function JobsPage() {
   return (
     <main className="main-frame page-main jobs-page">
       <PageHero
-        eyebrow="Jobs"
         title="Build the capability network"
         body="Open tracks are reviewed separately from general network onboarding. This page is for role-specific interest, referrals, and recruiting conversations."
       />
