@@ -155,18 +155,18 @@ function ArrowIcon() {
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const links = [
-    ["System", "#system"],
-    ["Network", "#network"],
-    ["Tracks", "#tracks"],
-    ["Team", "#team"],
-    ["Jobs", "#jobs"],
-    ["Apply", "#apply"],
+    ["System", "/#system"],
+    ["Signals", "/#network"],
+    ["Paths", "/#tracks"],
+    ["Team", "/team"],
+    ["Jobs", "/jobs"],
+    ["Apply", "/#apply"],
   ];
 
   return (
     <header className="site-header">
       <div className="header-inner">
-        <a className="apply-block" href="#apply">
+        <a className="apply-block" href="/#apply">
           Apply
         </a>
         <div className="nav-shell">
@@ -211,7 +211,7 @@ function Hero() {
         We identify, connect, and support people with rare judgment, structural understanding,
         and long-term thinking.
       </p>
-      <a className="outline-cta" href="#system">
+      <a className="outline-cta" href="/#system">
         <span>Explore the system</span>
         <ArrowIcon />
       </a>
@@ -529,6 +529,30 @@ function WhatHappens() {
   );
 }
 
+function LandingLinks() {
+  return (
+    <section className="spc-section landing-links" aria-label="Explore more">
+      <div className="section-label">
+        <h2>Next</h2>
+      </div>
+      <div className="landing-link-grid">
+        <a className="landing-link-card team-link" href="/team">
+          <span>Credibility</span>
+          <h2>Meet the people building Novara</h2>
+          <p>Team, advisors, operating ownership, and the public structure behind the network.</p>
+          <strong>Open team page</strong>
+        </a>
+        <a className="landing-link-card jobs-link" href="/jobs">
+          <span>Recruiting</span>
+          <h2>View current open tracks</h2>
+          <p>Role categories, selected track review, and the job-specific application path.</p>
+          <strong>Open jobs page</strong>
+        </a>
+      </div>
+    </section>
+  );
+}
+
 function TeamSection() {
   return (
     <section className="team-section" id="team">
@@ -675,6 +699,78 @@ function StayInLoop() {
   );
 }
 
+function PageHero({
+  eyebrow,
+  title,
+  body,
+}: {
+  eyebrow: string;
+  title: string;
+  body: string;
+}) {
+  return (
+    <section className="page-hero">
+      <div className="page-hero-inner">
+        <p>{eyebrow}</p>
+        <h1>{title}</h1>
+        <span>{body}</span>
+      </div>
+    </section>
+  );
+}
+
+function LandingPage({ onLightChange }: { onLightChange: (isOn: boolean) => void }) {
+  return (
+    <main className="main-frame">
+      <Hero />
+      <SquiggleLine onLightChange={onLightChange} />
+      <HowToStart />
+      <CapabilityPaths />
+      <WhatHappens />
+      <LandingLinks />
+      <StayInLoop />
+    </main>
+  );
+}
+
+function TeamPage() {
+  return (
+    <main className="main-frame page-main">
+      <PageHero
+        eyebrow="Team"
+        title="The institution behind the network"
+        body="Novara needs visible stewardship: people accountable for capability design, partner trust, and long-term operating quality."
+      />
+      <TeamSection />
+      <section className="page-cta">
+        <a className="outline-cta large" href="/jobs">
+          <span>View open tracks</span>
+          <ArrowIcon />
+        </a>
+      </section>
+    </main>
+  );
+}
+
+function JobsPage() {
+  return (
+    <main className="main-frame page-main jobs-page">
+      <PageHero
+        eyebrow="Jobs"
+        title="Build the capability network"
+        body="Open tracks are reviewed separately from general network onboarding. This page is for role-specific interest, referrals, and recruiting conversations."
+      />
+      <JobApplications />
+      <section className="page-cta">
+        <a className="outline-cta large" href="/#apply">
+          <span>Join general intake</span>
+          <ArrowIcon />
+        </a>
+      </section>
+    </main>
+  );
+}
+
 function Footer() {
   return (
     <footer className="footer" id="timeline">
@@ -698,20 +794,21 @@ function Footer() {
 
 function App() {
   const [isLightOn, setIsLightOn] = useState(false);
+  const pathname = window.location.pathname;
+  const page =
+    pathname === "/team" ? (
+      <TeamPage />
+    ) : pathname === "/jobs" ? (
+      <JobsPage />
+    ) : (
+      <LandingPage onLightChange={setIsLightOn} />
+    );
+  const isInteriorPage = pathname === "/team" || pathname === "/jobs";
 
   return (
-    <div className={`app-shell ${isLightOn ? "light-on" : ""}`}>
+    <div className={`app-shell ${isLightOn || isInteriorPage ? "light-on" : ""}`}>
       <Header />
-      <main className="main-frame">
-        <Hero />
-        <SquiggleLine onLightChange={setIsLightOn} />
-        <HowToStart />
-        <CapabilityPaths />
-        <WhatHappens />
-        <TeamSection />
-        <JobApplications />
-        <StayInLoop />
-      </main>
+      {page}
       <Footer />
     </div>
   );
