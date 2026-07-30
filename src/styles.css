@@ -146,6 +146,7 @@ body {
 .menu-panel,
 .menu-panel a:last-child,
 .loop-inner input,
+.loop-inner select,
 .job-apply-panel input {
   transition:
     background 0.8s ease,
@@ -323,12 +324,22 @@ input {
   gap: 30px;
   padding: 84px 0 92px;
   background:
-    radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--amber) 18%, transparent), transparent 36%),
+    radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--signal) 20%, transparent), transparent 36%),
     linear-gradient(
       180deg,
       color-mix(in srgb, var(--surface) 70%, transparent),
       color-mix(in srgb, var(--white) 0%, transparent)
-    );
+  );
+}
+
+.hero-eyebrow {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.96px;
+  line-height: 16px;
+  text-transform: uppercase;
 }
 
 .hero-section h1 {
@@ -343,12 +354,24 @@ input {
   text-align: center;
 }
 
-.hero-section p {
+.hero-section > p:not(.hero-eyebrow) {
   max-width: 550px;
   margin: 0;
   padding: 0 20px;
   font-size: 18px;
   text-align: center;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+
+.outline-cta.primary {
+  background: var(--amber);
+  color: #06131e;
 }
 
 .squiggle-section {
@@ -528,6 +551,48 @@ input {
   padding-bottom: 56px;
 }
 
+.statement-section {
+  padding: 36px 0 72px;
+}
+
+.statement-grid,
+.challenge-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(320px, 0.72fr);
+  gap: 72px;
+  padding: 34px 0 28px;
+}
+
+.statement-grid h2,
+.challenge-grid h2 {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 52px;
+  font-weight: 400;
+  letter-spacing: 0.46px;
+  line-height: 58px;
+}
+
+.statement-grid p,
+.challenge-grid p {
+  margin: 0;
+  font-size: 18px;
+  line-height: 30px;
+}
+
+.statement-grid p + p {
+  margin-top: 18px;
+}
+
+.beat-line {
+  margin: 18px 0 0;
+  border-top: 1px solid var(--line);
+  padding-top: 18px;
+  font-family: var(--serif);
+  font-size: 28px;
+  line-height: 34px;
+}
+
 .intro-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -696,9 +761,31 @@ input {
   padding: 22px 0 70px;
 }
 
+.paths-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(280px, 0.6fr);
+  gap: 56px;
+  padding-top: 34px;
+}
+
+.paths-heading h2 {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 44px;
+  font-weight: 400;
+  line-height: 50px;
+}
+
+.paths-heading p {
+  margin: 0;
+  align-self: end;
+  font-size: 17px;
+  line-height: 28px;
+}
+
 .paths-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 16px;
   margin: 40px 0;
 }
@@ -768,6 +855,31 @@ input {
   max-width: 560px;
   font-size: 16px;
   line-height: 26px;
+}
+
+.challenge-section {
+  padding: 18px 0 76px;
+}
+
+.challenge-grid {
+  align-items: stretch;
+}
+
+.challenge-points {
+  display: grid;
+  gap: 12px;
+}
+
+.challenge-points p {
+  display: flex;
+  align-items: center;
+  min-height: 82px;
+  border: 1px solid var(--ink);
+  border-radius: 4px;
+  padding: 18px 20px;
+  background: color-mix(in srgb, var(--surface) 70%, var(--paper));
+  font-size: 16px;
+  line-height: 25px;
 }
 
 .happens-section {
@@ -844,7 +956,7 @@ input {
 
 .landing-link-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 18px;
   padding-top: 28px;
 }
@@ -862,6 +974,11 @@ input {
 .landing-link-card.team-link {
   background:
     linear-gradient(135deg, color-mix(in srgb, var(--moss) 82%, white), var(--paper));
+}
+
+.landing-link-card.why-link {
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--steel) 58%, white), var(--surface));
 }
 
 .landing-link-card.jobs-link {
@@ -1290,14 +1407,13 @@ input {
 
 .loop-inner form {
   position: relative;
-  display: flex;
-  align-items: flex-end;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
 }
 
 .loop-inner label {
   display: flex;
-  flex: 1;
   flex-direction: column;
   gap: 8px;
   font-size: 14px;
@@ -1305,13 +1421,18 @@ input {
   text-transform: uppercase;
 }
 
-.loop-inner input {
+.loop-inner input,
+.loop-inner select {
   height: 56px;
   border: 1px solid var(--ink);
   border-radius: 5px;
   padding: 0 16px;
   background: var(--surface);
   color: var(--ink);
+}
+
+select {
+  appearance: none;
 }
 
 .loop-inner button {
@@ -1325,6 +1446,11 @@ input {
   font-size: 15px;
   letter-spacing: 0.6px;
   text-transform: uppercase;
+}
+
+.intake-form button,
+.intake-form .form-status {
+  grid-column: 1 / -1;
 }
 
 .form-status {
@@ -1407,6 +1533,9 @@ input:focus-visible {
   }
 
   .intro-grid,
+  .statement-grid,
+  .paths-heading,
+  .challenge-grid,
   .track-cards,
   .landing-link-grid,
   .happens-inner,
@@ -1480,8 +1609,7 @@ input:focus-visible {
   }
 
   .loop-inner form {
-    flex-direction: column;
-    align-items: stretch;
+    grid-template-columns: 1fr;
     padding-bottom: 24px;
   }
 
@@ -1560,7 +1688,7 @@ input:focus-visible {
     line-height: 35px;
   }
 
-  .hero-section p {
+  .hero-section > p:not(.hero-eyebrow) {
     max-width: 340px;
     padding: 0;
   }
@@ -1571,6 +1699,9 @@ input:focus-visible {
   }
 
   .intro-grid h3,
+  .statement-grid h2,
+  .paths-heading h2,
+  .challenge-grid h2,
   .track-card h3,
   .landing-link-card h2,
   .happens-content h2,
