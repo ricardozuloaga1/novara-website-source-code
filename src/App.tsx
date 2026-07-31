@@ -2,71 +2,71 @@ import { useEffect, useRef, useState } from "react";
 
 const capabilityPaths = [
   {
-    title: "Understand Change",
-    body: "See the long-term structures behind technology, industry, and society.",
+    title: "Capability Profile",
+    body: "A readable view of strengths, growth areas, and capability signals.",
     color: "var(--paper)",
   },
   {
-    title: "Find Direction",
-    body: "Identify what is worth a ten- or twenty-year commitment.",
+    title: "Judgment Record",
+    body: "A log of what you noticed, what you believed, and how your view changed.",
     color: "var(--amber)",
   },
   {
-    title: "Ask Better Questions",
-    body: "Move beyond existing answers toward questions that define the future.",
+    title: "AI Challenge",
+    body: "Structured pressure from AI so strong reasoning can be tested, not just stated.",
     color: "var(--steel)",
   },
   {
-    title: "Form Judgment",
-    body: "Reason through uncertainty, disagreement, and pressure.",
+    title: "Confidence Tracking",
+    body: "See where conviction is earned, where uncertainty remains, and where revision is needed.",
     color: "var(--moss)",
   },
   {
-    title: "Work with AI",
-    body: "Set goals, verify results, and use AI without outsourcing responsibility.",
+    title: "Future Questions",
+    body: "Prompts and scenarios that surface what someone is able to understand and build toward.",
     color: "var(--limestone)",
   },
   {
-    title: "Create with Others",
-    body: "Turn understanding into real projects and long-term value.",
+    title: "Opportunity Routing",
+    body: "A path from visible capability to pilots, roles, partners, and long-term projects.",
     color: "var(--paper)",
   },
 ];
 
 const tracks = [
   {
-    title: "Stake",
-    meta: "Your judgment",
-    body: "Take a position on a real business, ethical, or crisis scenario.",
+    title: "Complete a Session",
+    meta: "Make judgment visible",
+    body: "Respond to a short scenario, explain your reasoning, and mark your confidence.",
   },
   {
-    title: "Pressure",
-    meta: "AI rebuttal",
-    body: "Face the strongest counterargument and decide whether to hold or revise.",
+    title: "Build a Profile",
+    meta: "Understand strengths",
+    body: "Novara turns repeated sessions into a capability profile that is easier to discuss and improve.",
   },
   {
-    title: "Reveal",
-    meta: "Resilience score",
-    body: "See whether your judgment held up, changed correctly, or was led astray.",
+    title: "Find the Right Path",
+    meta: "Connect to opportunity",
+    body: "Strong signals can route into pilots, roles, partner projects, or continued development.",
   },
 ];
 
 const happens = [
   {
-    title: "Individuals",
-    body: "Students, founders, researchers, operators, and people with a long-term interest in the future.",
+    title: "Candidates",
+    body: "People who want a clearer way to show judgment, direction, and capability beyond a resume.",
   },
   {
-    title: "Future Enterprise Partners",
-    body: "Organizations preparing for important future directions, talent shifts, and long-term strategic choices.",
+    title: "Teams",
+    body: "Organizations looking for better signals of judgment, learning ability, and AI-era capability.",
   },
   {
-    title: "Education Partners",
-    body: "Schools, universities, and learning organizations exploring capability development in the AI era.",
+    title: "Schools",
+    body: "Learning communities exploring how to develop and recognize capabilities that stay valuable.",
   },
   {
-    title: "City Partners",
-    body: "Local ecosystem builders connecting talent, enterprise, capital, and global opportunity.",
+    title: "Partners",
+    body: "Institutions, cities, and ecosystem builders that want stronger routes from potential to work.",
   },
 ];
 
@@ -125,10 +125,10 @@ const jobTracks = [
 ];
 
 const footerGroups = [
-  ["Judgment Arena", "Take the Challenge", "AI Rebuttal", "Resilience Score"],
-  ["Why Novara", "Future Questions", "Future Capability", "Manifesto"],
-  ["Build Together", "Partners", "City Nodes", "Global Experts"],
-  ["Engage", "Apply", "Open Tracks", "Contact"],
+  ["Product", "Capability Profile", "Judgment Sessions", "Opportunity Routing"],
+  ["Company", "Why Novara", "Future Capability", "Partners"],
+  ["Paths", "Candidates", "Teams", "Schools"],
+  ["Engage", "Contact", "Open Tracks", "Founding Cohort"],
 ];
 
 const assemblyBlocks = [
@@ -165,19 +165,19 @@ function ArrowIcon() {
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const links = [
-    ["Arena", "/#arena"],
+    ["Product", "/#system"],
     ["Why", "/#why"],
-    ["Capability", "/#network"],
-    ["Challenges", "/#challenges"],
-    ["Partners", "/#partners"],
-    ["Apply", "/#apply"],
+    ["Offers", "/#network"],
+    ["Who", "/#partners"],
+    ["Jobs", "/jobs"],
+    ["Contact", "/#contact"],
   ];
 
   return (
     <header className="site-header">
       <div className="header-inner">
-        <a className="apply-block" href="/#apply">
-          Apply
+        <a className="apply-block" href="/#contact">
+          Contact
         </a>
         <div className="nav-shell">
           <nav className="main-nav" aria-label="Primary navigation">
@@ -216,19 +216,19 @@ function Header() {
 function Hero() {
   return (
     <section className="hero-section" id="arena">
-      <p className="hero-eyebrow">Judgment Arena</p>
-      <h1>The future will not reward those who know the most</h1>
+      <p className="hero-eyebrow">Global capability network for the AI era</p>
+      <h1>Know your strengths. Build what matters next.</h1>
       <p>
-        It will reward people who can see what is coming, withstand challenge, revise when
-        needed, and make better long-term judgments.
+        Novara is a capability platform for the AI era. The app helps people record judgment,
+        understand their strengths, and connect credible capability signals to real opportunities.
       </p>
       <div className="hero-actions">
-        <a className="outline-cta primary" href="/#system">
-          <span>Take the challenge</span>
+        <a className="outline-cta primary" href="/#contact">
+          <span>Get in touch</span>
           <ArrowIcon />
         </a>
         <a className="outline-cta" href="/#why">
-          <span>Why Novara</span>
+          <span>See how it works</span>
         </a>
       </div>
     </section>
@@ -345,21 +345,22 @@ function WhyNow() {
   return (
     <section className="spc-section statement-section" id="why">
       <div className="section-label">
-        <h2>Why learning must change</h2>
+        <h2>Why Novara</h2>
       </div>
       <div className="statement-grid">
-        <h2>Knowledge is becoming abundant. Direction is becoming scarce.</h2>
+        <h2>AI makes answers abundant. Judgment is still hard to see.</h2>
         <div>
           <p>
-            AI is making answers easier to obtain. But answers are not the same as judgment.
+            Resumes, grades, and short interviews miss the thing that now matters most: how
+            someone thinks when information is incomplete.
           </p>
           <p>
-            The hard question is no longer only what can I learn. It is what is worth learning,
-            what is worth building, and what should I commit to for the long term.
+            Novara gives people a structured way to show judgment, confidence, revision, and
+            human-AI collaboration through real decision moments.
           </p>
         </div>
       </div>
-      <p className="beat-line">As knowledge grows more abundant, direction becomes more important.</p>
+      <p className="beat-line">The goal is simple: make capability legible before opportunity arrives.</p>
     </section>
   );
 }
@@ -421,14 +422,14 @@ function HowToStart() {
   return (
     <section className="spc-section how-section" id="system">
       <div className="section-label">
-        <h2>How it works</h2>
+        <h2>What the app does</h2>
       </div>
       <div className="intro-grid">
         <div>
-          <h3>Can you withstand AI's interrogation?</h3>
+          <h3>A short loop for proving judgment.</h3>
           <p>
-            This is not multiple choice. You take a position, state your confidence, and face
-            pressure from an AI opponent built to challenge your reasoning.
+            Users work through focused sessions that capture how they reason, what evidence they
+            use, how confident they are, and when they should revise.
           </p>
         </div>
         <div className="system-object" ref={objectRef} aria-hidden="true">
@@ -443,7 +444,7 @@ function HowToStart() {
       </div>
       <div className="track-cards">
         {tracks.map((track, index) => (
-          <a className="track-card" href="#apply" key={track.title}>
+          <a className="track-card" href="#contact" key={track.title}>
             <span className="track-number">{String(index + 1).padStart(2, "0")}</span>
             <h3>{track.title}</h3>
             <p className="meta">{track.meta}</p>
@@ -452,8 +453,8 @@ function HowToStart() {
         ))}
       </div>
       <div className="center-cta">
-        <a className="outline-cta large" href="#apply">
-          <span>Start with judgment</span>
+        <a className="outline-cta large" href="#contact">
+          <span>Start a conversation</span>
           <ArrowIcon />
         </a>
       </div>
@@ -514,13 +515,13 @@ function CapabilityPaths() {
   return (
     <section className="spc-section paths-section" id="network">
       <div className="section-label">
-        <h2>What Novara develops</h2>
+        <h2>What the app offers</h2>
       </div>
       <div className="paths-heading">
-        <h2>The capabilities harder for AI to replace.</h2>
+        <h2>A capability profile built from how you actually think.</h2>
         <p>
-          Novara starts from long-term future need, then works backward to the capabilities people
-          should begin developing now.
+          The product turns short judgment moments into clearer signals: strengths, uncertainty,
+          confidence, collaboration with AI, and readiness for the right next path.
         </p>
       </div>
       <div className="paths-grid" ref={gridRef}>
@@ -543,7 +544,7 @@ function CapabilityPaths() {
       </div>
       <div className="center-cta compact">
         <a className="outline-cta" href="#challenges">
-          Explore challenges
+          See the problem
         </a>
       </div>
     </section>
@@ -554,20 +555,20 @@ function GlobalChallenges() {
   return (
     <section className="spc-section challenge-section" id="challenges">
       <div className="section-label">
-        <h2>Global Challenges</h2>
+        <h2>The problem</h2>
       </div>
       <div className="challenge-grid">
         <div>
-          <h2>Future capability cannot be discovered through exams alone.</h2>
+          <h2>Potential is everywhere. Reliable signals are not.</h2>
           <p>
-            Novara Global Challenges validate capability through real problems, complex choices,
-            AI collaboration, and actual creation.
+            AI changes what people can produce. It also makes it harder to know who understands,
+            who is guessing, and who can make decisions under pressure.
           </p>
         </div>
         <div className="challenge-points">
-          <p>We look for people who can discover important questions.</p>
-          <p>We test who can form judgment amid uncertainty.</p>
-          <p>We connect strong judgment to creation, partners, and responsibility.</p>
+          <p>Traditional credentials are too slow and too narrow.</p>
+          <p>AI output can hide weak reasoning behind polished answers.</p>
+          <p>Partners need better ways to identify people ready for meaningful work.</p>
         </div>
       </div>
     </section>
@@ -579,12 +580,12 @@ function EntryPoints() {
     <section className="happens-section" id="partners">
       <div className="happens-inner">
         <aside>
-          <p>Entry points</p>
+          <p>Who it is for</p>
           <ol>
-            <li>Individuals</li>
-            <li>Enterprises</li>
-            <li>Education</li>
-            <li>Cities</li>
+            <li>Candidates</li>
+            <li>Teams</li>
+            <li>Schools</li>
+            <li>Partners</li>
           </ol>
         </aside>
         <div className="happens-content">
@@ -604,27 +605,58 @@ function LandingLinks() {
   return (
     <section className="spc-section landing-links" aria-label="Explore more">
       <div className="section-label">
-        <h2>Build the future together</h2>
+        <h2>Explore Novara</h2>
       </div>
       <div className="landing-link-grid">
         <a className="landing-link-card why-link" href="#why">
           <span>Why Novara</span>
-          <h2>A new path for the AI era</h2>
-          <p>Starting from future questions, building future capability, and creating long-term value.</p>
+          <h2>The thesis behind the company</h2>
+          <p>AI makes information abundant. Novara focuses on the judgment layer that remains scarce.</p>
           <strong>Read the thesis</strong>
         </a>
         <a className="landing-link-card team-link" href="/team">
           <span>Team</span>
-          <h2>Meet the people building Novara</h2>
-          <p>Team, advisors, operating ownership, and the public structure behind the network.</p>
+          <h2>Who is building it</h2>
+          <p>Company stewardship, capability design, partner trust, and long-term operating quality.</p>
           <strong>Open team page</strong>
         </a>
         <a className="landing-link-card jobs-link" href="/jobs">
           <span>Recruiting</span>
-          <h2>View current open tracks</h2>
-          <p>Role categories, selected track review, and the job-specific application path.</p>
+          <h2>Help build the platform</h2>
+          <p>Open tracks for people working across product, partnerships, strategy, and operations.</p>
           <strong>Open jobs page</strong>
         </a>
+      </div>
+    </section>
+  );
+}
+
+function UpcomingPilot() {
+  return (
+    <section className="spc-section pilot-news" id="pilot">
+      <div className="section-label">
+        <h2>Upcoming</h2>
+      </div>
+      <div className="pilot-news-inner">
+        <div className="pilot-news-copy">
+          <p>Founding cohort</p>
+          <h2>A pilot is being prepared for early college users.</h2>
+          <span>
+            Novara is testing early learning experiences with a small founding cohort. The public
+            website remains the main place to understand the company, reach the team, and follow
+            upcoming pilots.
+          </span>
+          <a className="outline-cta" href="#contact">
+            <span>Ask about the cohort</span>
+            <ArrowIcon />
+          </a>
+        </div>
+        <figure className="pilot-flyer">
+          <img
+            alt="Novara founding cohort flyer"
+            src="/novara-founding-cohort-flyer.png"
+          />
+        </figure>
       </div>
     </section>
   );
@@ -733,9 +765,9 @@ function StayInLoop() {
   const [submitted, setSubmitted] = useState(false);
 
   return (
-    <section className="loop-section" id="apply">
+    <section className="loop-section" id="contact">
       <div className="loop-inner">
-        <h2>The future is already here. We hope to meet you in it.</h2>
+        <h2>Contact Novara.</h2>
         <form
           className="intake-form"
           onSubmit={(event) => {
@@ -765,19 +797,21 @@ function StayInLoop() {
             Path
             <select defaultValue="">
               <option value="" disabled>Select one</option>
-              <option>Individual</option>
-              <option>Partner</option>
-              <option>City partner</option>
-              <option>Expert or mentor</option>
+              <option>General introduction</option>
+              <option>Candidate or contributor</option>
+              <option>Team or employer</option>
+              <option>School or university</option>
+              <option>Strategic partner</option>
+              <option>Founding cohort pilot</option>
             </select>
           </label>
           <label>
-            Future question
-            <input placeholder="What future question matters most to you?" type="text" />
+            Message
+            <input placeholder="How would you like to connect?" type="text" />
           </label>
-          <button type="submit">Submit intake</button>
+          <button type="submit">Send message</button>
           <p className={`form-status ${submitted ? "visible" : ""}`}>
-            Received. We will route this through the right Novara path.
+            Received. We will route this to the right Novara contact path.
           </p>
         </form>
       </div>
@@ -815,6 +849,7 @@ function LandingPage({ onLightChange }: { onLightChange: (isOn: boolean) => void
       <CapabilityPaths />
       <GlobalChallenges />
       <EntryPoints />
+      <UpcomingPilot />
       <LandingLinks />
       <StayInLoop />
     </main>
@@ -849,8 +884,8 @@ function JobsPage() {
       />
       <JobApplications />
       <section className="page-cta">
-        <a className="outline-cta large" href="/#apply">
-          <span>Join general intake</span>
+        <a className="outline-cta large" href="/#contact">
+          <span>Contact Novara</span>
           <ArrowIcon />
         </a>
       </section>
