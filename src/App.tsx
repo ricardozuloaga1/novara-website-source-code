@@ -124,6 +124,47 @@ const jobTracks = [
   },
 ];
 
+const pilotSteps = [
+  {
+    title: "Understand the pilot",
+    meta: "What Novara is testing",
+    body: "Novara is testing early learning experiences that help people understand ability, judgment, and growth.",
+  },
+  {
+    title: "Submit the application",
+    meta: "Google Form intake",
+    body: "Share profile, learning background, goals, fast-track signals, and availability through the official form.",
+  },
+  {
+    title: "Test and give feedback",
+    meta: "Founding cohort",
+    body: "Selected users complete early product sessions and help Novara improve the experience before broader release.",
+  },
+];
+
+const pilotEligibility = [
+  "Ages 18-24",
+  "GPA 3.3+",
+  "Fluent English",
+  "STEM, business, or humanities",
+  "Available for required testing and an exit survey",
+];
+
+const pilotFormPostUrl =
+  "https://docs.google.com/forms/d/e/1FAIpQLSdusHuOtzj7-xpTQdZxslH3j9LVmbmNN32_s_Yz7PFiWf349Q/formResponse";
+
+const ageGroups = ["13-18", "18-24", "24-35", "35+"];
+const regions = ["United States", "Asia", "Europe", "Other"];
+const fastTrackOptions = [
+  "IMO, IPhO, IChO, IOI, or IBO Gold Medal",
+  "Founder of a notable or funded startup",
+  "Published research",
+  "Top national-level award recipient",
+  "None of the above",
+];
+const developmentGoals = ["Academic", "Career", "Entrepreneurship", "Lifelong Learning"];
+const availabilityOptions = ["Less than 2 hours", "2-5 hours", "5-10 hours", "More than 10 hours"];
+
 const footerGroups = [
   ["Product", "Capability Profile", "Judgment Sessions", "Opportunity Routing"],
   ["Company", "Why Novara", "Future Capability", "Partners"],
@@ -162,7 +203,7 @@ function ArrowIcon() {
   );
 }
 
-function Header() {
+function Header({ isPilot = false }: { isPilot?: boolean }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const links = [
     ["Product", "/#system"],
@@ -174,12 +215,26 @@ function Header() {
   ];
 
   return (
-    <header className="site-header">
+    <header className={`site-header ${isPilot ? "pilot-header" : ""}`}>
       <div className="header-inner">
+        {isPilot ? (
+          <div className="header-logo" aria-label="Novara">
+            <img src="/assets/novara-logo-official-transparent.png" alt="Novara" />
+          </div>
+        ) : (
+        <a className="header-logo" href="/" aria-label="Novara home">
+          <img src="/assets/novara-logo-official-transparent.png" alt="Novara" />
+        </a>
+        )}
+        {isPilot ? null : (
         <a className="apply-block" href="/#contact">
           Contact
         </a>
+        )}
         <div className="nav-shell">
+          {isPilot ? (
+            <p className="pilot-header-title">Founding cohort application</p>
+          ) : (
           <nav className="main-nav" aria-label="Primary navigation">
             {links.slice(0, 5).map(([label, href]) => (
               <a href={href} key={href}>
@@ -187,6 +242,9 @@ function Header() {
               </a>
             ))}
           </nav>
+          )}
+          {isPilot ? null : (
+          <>
           <button
             className={`menu-button ${isMenuOpen ? "is-open" : ""}`}
             type="button"
@@ -207,6 +265,8 @@ function Header() {
               ))}
             </div>
           ) : null}
+          </>
+          )}
         </div>
       </div>
     </header>
@@ -646,7 +706,7 @@ function UpcomingPilot() {
             website remains the main place to understand the company, reach the team, and follow
             upcoming pilots.
           </span>
-          <a className="outline-cta" href="#contact">
+          <a className="outline-cta" href="/pilot">
             <span>Ask about the cohort</span>
             <ArrowIcon />
           </a>
@@ -659,6 +719,421 @@ function UpcomingPilot() {
         </figure>
       </div>
     </section>
+  );
+}
+
+function PilotRecruitmentPage() {
+  const [submitted, setSubmitted] = useState(false);
+  const [formError, setFormError] = useState("");
+  const [activeFormStep, setActiveFormStep] = useState(0);
+  const [fastTrackSelections, setFastTrackSelections] = useState<string[]>([]);
+  const [developmentSelections, setDevelopmentSelections] = useState<string[]>([]);
+  const formRef = useRef<HTMLFormElement>(null);
+  const pilotFormSteps = ["Profile", "Signals", "Goals", "Commitment"];
+
+  const toggleSelection = (
+    value: string,
+    selected: string[],
+    setSelected: (next: string[]) => void,
+  ) => {
+    setSelected(
+      selected.includes(value)
+        ? selected.filter((item) => item !== value)
+        : [...selected, value],
+    );
+    setSubmitted(false);
+    setFormError("");
+  };
+
+  const validateCurrentStep = () => {
+    const currentPanel = formRef.current?.querySelector<HTMLElement>(
+      `[data-form-step="${activeFormStep}"]`,
+    );
+
+    if (!currentPanel) {
+      return true;
+    }
+
+    const fields = Array.from(
+      currentPanel.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>(
+        "input, select, textarea",
+      ),
+    );
+
+    for (const field of fields) {
+      if (!field.reportValidity()) {
+        return false;
+      }
+    }
+
+    if (activeFormStep === 1 && !fastTrackSelections.length) {
+      setFormError("Please select at least one fast-track eligibility option.");
+      return false;
+    }
+
+    if (activeFormStep === 2 && !developmentSelections.length) {
+      setFormError("Please select at least one personal development goal.");
+      return false;
+    }
+
+    setFormError("");
+    return true;
+  };
+
+  const goToNextFormStep = () => {
+    if (!validateCurrentStep()) {
+      return;
+    }
+    setSubmitted(false);
+    setActiveFormStep((step) => Math.min(step + 1, pilotFormSteps.length - 1));
+  };
+
+  return (
+    <main className="main-frame pilot-page">
+      <section className="pilot-hero">
+        <div className="pilot-hero-inner">
+          <div className="pilot-hero-copy">
+            <p>Novara founding cohort</p>
+            <h1>Be early. Help shape what Novara becomes.</h1>
+            <span>
+              Novara is building a capability platform for the AI era. This pilot invites a small
+              seed group to test early learning experiences, share feedback, and influence what gets
+              built next.
+            </span>
+            <div className="hero-actions">
+              <button
+                className="outline-cta primary"
+                type="button"
+                onClick={() => document.getElementById("pilot-form")?.scrollIntoView({ behavior: "smooth" })}
+              >
+                <span>Start application</span>
+                <ArrowIcon />
+              </button>
+            </div>
+          </div>
+          <figure className="pilot-hero-flyer">
+            <img alt="Novara founding cohort flyer" src="/novara-founding-cohort-flyer.png" />
+          </figure>
+        </div>
+      </section>
+
+      <section className="spc-section pilot-strip" aria-label="Pilot highlights">
+        <div>
+          <span>35</span>
+          <p>college places</p>
+        </div>
+        <div>
+          <span>$10</span>
+          <p>guaranteed for completed required testing and exit survey</p>
+        </div>
+        <div>
+          <span>10</span>
+          <p>additional $25 gift cards by drawing among eligible completers</p>
+        </div>
+      </section>
+
+      <section className="spc-section pilot-section">
+        <div className="section-label">
+          <h2>What you are signing up for</h2>
+        </div>
+        <div className="track-cards pilot-step-cards">
+          {pilotSteps.map((step, index) => (
+            <article className="track-card" key={step.title}>
+              <span className="track-number">{String(index + 1).padStart(2, "0")}</span>
+              <h3>{step.title}</h3>
+              <p className="meta">{step.meta}</p>
+              <p>{step.body}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="spc-section pilot-section">
+        <div className="section-label">
+          <h2>Who the flyer is for</h2>
+        </div>
+        <div className="pilot-eligibility">
+          <h2>Founding cohort fit</h2>
+          <div>
+            {pilotEligibility.map((item) => (
+              <p key={item}>{item}</p>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="pilot-form-section" id="pilot-form">
+        <div className="pilot-form-inner">
+          <div className="pilot-form-copy">
+            <p>Official intake</p>
+            <h2>Apply without leaving this page.</h2>
+            <span>
+              Complete the intake here. The application is submitted into Novara's official
+              response system in the background, without sending applicants away from this page.
+            </span>
+          </div>
+          <form
+            action={pilotFormPostUrl}
+            className="pilot-google-form"
+            method="post"
+            ref={formRef}
+            target="pilot-form-submit-frame"
+            onSubmit={(event) => {
+              if (activeFormStep !== pilotFormSteps.length - 1) {
+                event.preventDefault();
+                goToNextFormStep();
+                return;
+              }
+              if (!fastTrackSelections.length || !developmentSelections.length) {
+                event.preventDefault();
+                setSubmitted(false);
+                setFormError("Please complete the required checkbox questions before submitting.");
+                return;
+              }
+              setFormError("");
+              setSubmitted(true);
+            }}
+          >
+            <input name="fvv" type="hidden" value="1" />
+            <input name="pageHistory" type="hidden" value="0" />
+            {submitted ? (
+              <div className="pilot-success-panel" role="status" aria-live="polite">
+                <div className="pilot-success-mark" aria-hidden="true">
+                  <span />
+                </div>
+                <p>Application received</p>
+                <h3>You are on the founding cohort list.</h3>
+                <span>
+                  Thank you for applying. Novara will review the application and follow up with
+                  next steps if there is a match for the pilot cohort.
+                </span>
+                <div className="pilot-success-rail" aria-hidden="true">
+                  <i />
+                  <i />
+                  <i />
+                </div>
+              </div>
+            ) : (
+              <>
+            <div className="pilot-form-progress" aria-label="Application progress">
+              {pilotFormSteps.map((step, index) => (
+                <button
+                  className={index === activeFormStep ? "is-active" : ""}
+                  key={step}
+                  type="button"
+                  onClick={() => {
+                    if (index <= activeFormStep || validateCurrentStep()) {
+                      setActiveFormStep(index);
+                    }
+                  }}
+                >
+                  <span>{String(index + 1).padStart(2, "0")}</span>
+                  {step}
+                </button>
+              ))}
+            </div>
+
+            <div className="pilot-form-window">
+              <div className="pilot-form-track">
+                <div className="pilot-form-panel" data-form-step="0" aria-hidden={activeFormStep !== 0}>
+                  <div className="pilot-panel-heading">
+                    <p>Step 1</p>
+                    <h3>Profile basics</h3>
+                  </div>
+                  <div className="pilot-panel-grid">
+                    <label>
+                      Full Name *
+                      <input name="entry.639440409" placeholder="Your full name" required type="text" />
+                    </label>
+                    <label>
+                      Referred by *
+                      <input name="entry.1311292733" placeholder="Name or source" required type="text" />
+                    </label>
+                    <label>
+                      Email Address *
+                      <input name="entry.1289368796" placeholder="you@example.com" required type="email" />
+                    </label>
+                    <label>
+                      Age Group *
+                      <select defaultValue="" name="entry.129208249" required>
+                        <option value="" disabled>Select one</option>
+                        {ageGroups.map((option) => (
+                          <option key={option}>{option}</option>
+                        ))}
+                      </select>
+                    </label>
+                    <label>
+                      Region *
+                      <select defaultValue="" name="entry.1772927419" required>
+                        <option value="" disabled>Select one</option>
+                        {regions.map((option) => (
+                          <option key={option}>{option}</option>
+                        ))}
+                      </select>
+                    </label>
+                    <label>
+                      Current School or Employer
+                      <input name="entry.1161655588" placeholder="School, employer, or independent" type="text" />
+                    </label>
+                    <label className="field-wide">
+                      Current GPA or Role/Company
+                      <input name="entry.1309910543" placeholder="GPA, role, company, or N/A" type="text" />
+                    </label>
+                  </div>
+                </div>
+
+                <div className="pilot-form-panel" data-form-step="1" aria-hidden={activeFormStep !== 1}>
+                  <div className="pilot-panel-heading">
+                    <p>Step 2</p>
+                    <h3>Signals and tools</h3>
+                  </div>
+                  <div className="pilot-panel-grid">
+                    <label className="field-wide">
+                      Notable Projects, Research, or Portfolio Links
+                      <textarea name="entry.2087564402" placeholder="Links or short description" />
+                    </label>
+                    <fieldset className="field-wide option-field">
+                      <legend>Fast-Track Eligibility *</legend>
+                      {fastTrackOptions.map((option) => (
+                        <label className="checkbox-field" key={option}>
+                          <input
+                            checked={fastTrackSelections.includes(option)}
+                            name="entry.1788195517"
+                            type="checkbox"
+                            value={option}
+                            onChange={() =>
+                              toggleSelection(option, fastTrackSelections, setFastTrackSelections)
+                            }
+                          />
+                          <span>{option}</span>
+                        </label>
+                      ))}
+                    </fieldset>
+                    <label className="field-wide">
+                      Prior learning platforms or tools used *
+                      <textarea
+                        name="entry.183795642"
+                        placeholder="Coursera, Khan Academy, Duolingo, AI learning tools, tutoring apps, etc."
+                        required
+                      />
+                    </label>
+                  </div>
+                </div>
+
+                <div className="pilot-form-panel" data-form-step="2" aria-hidden={activeFormStep !== 2}>
+                  <div className="pilot-panel-heading">
+                    <p>Step 3</p>
+                    <h3>Goals and judgment</h3>
+                  </div>
+                  <div className="pilot-panel-grid">
+                    <label className="field-wide">
+                      What abilities matter most for your future, and why? *
+                      <textarea name="entry.1394160424" placeholder="Short answer" required />
+                    </label>
+                    <fieldset className="field-wide option-field">
+                      <legend>Personal development goals *</legend>
+                      {developmentGoals.map((option) => (
+                        <label className="checkbox-field" key={option}>
+                          <input
+                            checked={developmentSelections.includes(option)}
+                            name="entry.1286057109"
+                            type="checkbox"
+                            value={option}
+                            onChange={() =>
+                              toggleSelection(option, developmentSelections, setDevelopmentSelections)
+                            }
+                          />
+                          <span>{option}</span>
+                        </label>
+                      ))}
+                    </fieldset>
+                    <label className="field-wide">
+                      Describe a real-world problem you want to solve
+                      <textarea
+                        name="entry.935698422"
+                        placeholder="What problem matters, and what abilities would you need?"
+                      />
+                    </label>
+                  </div>
+                </div>
+
+                <div className="pilot-form-panel" data-form-step="3" aria-hidden={activeFormStep !== 3}>
+                  <div className="pilot-panel-heading">
+                    <p>Step 4</p>
+                    <h3>Availability and contribution</h3>
+                  </div>
+                  <div className="pilot-panel-grid">
+                    <label className="field-wide">
+                      How do you imagine AI helping you learn and grow?
+                      <textarea name="entry.264859645" placeholder="Short answer" />
+                    </label>
+                    <label className="field-wide">
+                      How would you like to contribute to the NOVARA community?
+                      <textarea name="entry.836059629" placeholder="Short answer" />
+                    </label>
+                    <label className="field-wide">
+                      Optional Bonus
+                      <textarea
+                        name="entry.1946805303"
+                        placeholder="Share a time you taught yourself something new, or a prediction about the future."
+                      />
+                    </label>
+                    <fieldset className="field-wide option-field">
+                      <legend>Weekly time availability for product engagement *</legend>
+                      {availabilityOptions.map((option) => (
+                        <label className="checkbox-field" key={option}>
+                          <input name="entry.963156267" required type="radio" value={option} />
+                          <span>{option}</span>
+                        </label>
+                      ))}
+                    </fieldset>
+                    <fieldset className="field-wide option-field">
+                      <legend>Are you willing to provide feedback and participate in the community? *</legend>
+                      {["Yes, I am willing to participate", "No"].map((option) => (
+                        <label className="checkbox-field" key={option}>
+                          <input name="entry.1031542068" required type="radio" value={option} />
+                          <span>{option}</span>
+                        </label>
+                      ))}
+                    </fieldset>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="pilot-form-controls">
+              <button
+                disabled={activeFormStep === 0}
+                type="button"
+                onClick={() => {
+                  setFormError("");
+                  setActiveFormStep((step) => Math.max(step - 1, 0));
+                }}
+              >
+                Back
+              </button>
+              {activeFormStep === pilotFormSteps.length - 1 ? (
+                <button type="submit">Submit application</button>
+              ) : (
+                <button type="button" onClick={goToNextFormStep}>
+                  Continue
+                </button>
+              )}
+            </div>
+            <p className={`form-status ${submitted || formError ? "visible" : ""}`}>
+              {formError || "Submitted. Your response has been received."}
+            </p>
+              </>
+            )}
+            <iframe
+              className="hidden-submit-frame"
+              name="pilot-form-submit-frame"
+              title="Pilot application submission"
+            />
+          </form>
+        </div>
+      </section>
+    </main>
   );
 }
 
@@ -922,16 +1397,18 @@ function App() {
       <TeamPage />
     ) : pathname === "/jobs" ? (
       <JobsPage />
+    ) : pathname === "/pilot" ? (
+      <PilotRecruitmentPage />
     ) : (
       <LandingPage onLightChange={setIsLightOn} />
     );
-  const isInteriorPage = pathname === "/team" || pathname === "/jobs";
+  const isInteriorPage = pathname === "/team" || pathname === "/jobs" || pathname === "/pilot";
 
   return (
     <div className={`app-shell ${isLightOn || isInteriorPage ? "light-on" : ""}`}>
-      <Header />
+      <Header isPilot={pathname === "/pilot"} />
       {page}
-      <Footer />
+      {pathname === "/pilot" ? null : <Footer />}
     </div>
   );
 }
