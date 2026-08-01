@@ -2167,6 +2167,8 @@ select {
 }
 
 .loop-inner button {
+  position: relative;
+  overflow: hidden;
   height: 56px;
   border: 1px solid var(--ink);
   border-radius: 5px;
@@ -2177,6 +2179,40 @@ select {
   font-size: 15px;
   letter-spacing: 0.6px;
   text-transform: uppercase;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.loop-inner button:hover {
+  transform: translateY(-1px);
+}
+
+.loop-inner button.is-submitted {
+  background: #f8f1d9;
+  color: #06131e;
+  box-shadow: 0 0 0 2px rgba(6, 19, 30, 0.2), 0 18px 34px rgba(6, 19, 30, 0.16);
+}
+
+.loop-inner button.is-submitted::before,
+.loop-inner button.is-submitted::after {
+  position: absolute;
+  top: 50%;
+  width: 46px;
+  height: 2px;
+  background: #2cc981;
+  content: "";
+  transform: translateY(-50%);
+}
+
+.loop-inner button.is-submitted::before {
+  left: 16px;
+}
+
+.loop-inner button.is-submitted::after {
+  right: 16px;
 }
 
 .intake-form button,
@@ -2185,19 +2221,42 @@ select {
 }
 
 .form-status {
-  position: absolute;
-  left: 0;
-  bottom: -28px;
+  display: grid;
+  gap: 4px;
   margin: 0;
-  color: var(--ink);
-  font-size: 13px;
-  line-height: 18px;
+  border: 1px solid rgba(6, 19, 30, 0.25);
+  border-left: 6px solid #2cc981;
+  border-radius: 5px;
+  max-height: 0;
+  overflow: hidden;
+  padding: 0 20px;
+  background: rgba(248, 241, 217, 0.78);
+  color: #06131e;
+  font-size: 16px;
+  line-height: 22px;
   opacity: 0;
-  transition: opacity 0.2s ease;
+  transform: translateY(-6px);
+  transition:
+    opacity 0.22s ease,
+    transform 0.22s ease;
+  pointer-events: none;
+}
+
+.form-status span {
+  font-family: var(--serif);
+  font-size: 28px;
+  line-height: 34px;
+}
+
+.form-status p {
+  margin: 0;
 }
 
 .form-status.visible {
+  max-height: 140px;
+  padding: 18px 20px;
   opacity: 1;
+  transform: translateY(0);
 }
 
 a:focus-visible,

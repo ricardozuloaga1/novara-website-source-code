@@ -1258,6 +1258,11 @@ function StayInLoop() {
         <h2>Contact Novara.</h2>
         <form
           className="intake-form"
+          onChange={() => {
+            if (submitted) {
+              setSubmitted(false);
+            }
+          }}
           onSubmit={(event) => {
             event.preventDefault();
             if (email.trim()) {
@@ -1283,7 +1288,7 @@ function StayInLoop() {
           </label>
           <label>
             Path
-            <select defaultValue="">
+            <select defaultValue="" required>
               <option value="" disabled>Select one</option>
               <option>General introduction</option>
               <option>Candidate or contributor</option>
@@ -1294,13 +1299,16 @@ function StayInLoop() {
             </select>
           </label>
           <label>
-            Message
-            <input placeholder="How would you like to connect?" type="text" />
+            City / Region
+            <input placeholder="City or region" type="text" required />
           </label>
-          <button type="submit">Send message</button>
-          <p className={`form-status ${submitted ? "visible" : ""}`}>
-            Received. We will route this to the right Novara contact path.
-          </p>
+          <button className={submitted ? "is-submitted" : ""} type="submit">
+            {submitted ? "Received" : "Send message"}
+          </button>
+          <div className={`form-status ${submitted ? "visible" : ""}`} role="status" aria-live="polite">
+            <span>Received.</span>
+            <p>We’ll follow up by email.</p>
+          </div>
         </form>
       </div>
     </section>
