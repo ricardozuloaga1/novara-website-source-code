@@ -2152,6 +2152,10 @@ input {
   text-transform: uppercase;
 }
 
+.loop-inner .hidden-field {
+  display: none;
+}
+
 .loop-inner input,
 .loop-inner select {
   height: 56px;
@@ -2257,6 +2261,11 @@ select {
   padding: 18px 20px;
   opacity: 1;
   transform: translateY(0);
+}
+
+.form-status.error {
+  border-left-color: #d86f31;
+  background: rgba(248, 241, 217, 0.92);
 }
 
 a:focus-visible,

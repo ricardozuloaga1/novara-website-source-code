@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Novara Forms</title>
+  </head>
+  <body>
+    <form name="novara-contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden>
+      <input type="hidden" name="form-name" value="novara-contact" />
+      <input type="hidden" name="contact_destination" value="ricardo@novara.tech" />
+      <input type="hidden" name="subject" value="New Novara contact inquiry" />
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+      <select name="path">
+        <option>General introduction</option>
+        <option>Candidate or contributor</option>
+        <option>Team or employer</option>
+        <option>School or university</option>
+        <option>Strategic partner</option>
+        <option>Founding cohort pilot</option>
+      </select>
+      <input type="text" name="city_region" />
+      <input name="bot-field" />
+    </form>
+  </body>
+</html>

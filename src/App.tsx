@@ -1251,6 +1251,7 @@ function JobApplications() {
 function StayInLoop() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [formError, setFormError] = useState(false);
 
   return (
     <section className="loop-section" id="contact">
@@ -1262,23 +1263,56 @@ function StayInLoop() {
             if (submitted) {
               setSubmitted(false);
             }
+            if (formError) {
+              setFormError(false);
+            }
           }}
-          onSubmit={(event) => {
+          name="novara-contact"
+          method="POST"
+          data-netlify="true"
+          netlify-honeypot="bot-field"
+          onSubmit={async (event) => {
             event.preventDefault();
-            if (email.trim()) {
+            const form = event.currentTarget;
+            const formData = new FormData(form);
+
+            try {
+              const response = await fetch("/__forms.html", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: new URLSearchParams(formData as unknown as string[][]).toString(),
+              });
+
+              if (!response.ok) {
+                throw new Error("Contact form submission failed");
+              }
+
               setSubmitted(true);
+              form.reset();
+              setEmail("");
+            } catch {
+              setFormError(true);
             }
           }}
         >
+          <input type="hidden" name="form-name" value="novara-contact" />
+          <input type="hidden" name="contact_destination" value="ricardo@novara.tech" />
+          <input type="hidden" name="subject" value="New Novara contact inquiry" />
+          <label className="hidden-field">
+            Do not fill this out
+            <input name="bot-field" tabIndex={-1} autoComplete="off" />
+          </label>
           <label>
             Name
-            <input placeholder="Your name" type="text" required />
+            <input name="name" placeholder="Your name" type="text" required />
           </label>
           <label>
             Email
             <input
+              name="email"
               placeholder="you@example.com"
               type="email"
+              required
               value={email}
               onChange={(event) => {
                 setEmail(event.target.value);
@@ -1288,7 +1322,7 @@ function StayInLoop() {
           </label>
           <label>
             Path
-            <select defaultValue="" required>
+            <select name="path" defaultValue="" required>
               <option value="" disabled>Select one</option>
               <option>General introduction</option>
               <option>Candidate or contributor</option>
@@ -1300,14 +1334,18 @@ function StayInLoop() {
           </label>
           <label>
             City / Region
-            <input placeholder="City or region" type="text" required />
+            <input name="city_region" placeholder="City or region" type="text" required />
           </label>
           <button className={submitted ? "is-submitted" : ""} type="submit">
             {submitted ? "Received" : "Send message"}
           </button>
-          <div className={`form-status ${submitted ? "visible" : ""}`} role="status" aria-live="polite">
-            <span>Received.</span>
-            <p>We’ll follow up by email.</p>
+          <div
+            className={`form-status ${submitted || formError ? "visible" : ""} ${formError ? "error" : ""}`}
+            role="status"
+            aria-live="polite"
+          >
+            <span>{formError ? "Not sent." : "Received."}</span>
+            <p>{formError ? "Please email ricardo@novara.tech directly." : "We’ll follow up by email."}</p>
           </div>
         </form>
       </div>
