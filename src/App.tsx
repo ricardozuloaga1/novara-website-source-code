@@ -153,7 +153,7 @@ const pilotEligibility = [
 const pilotFormPostUrl =
   "https://docs.google.com/forms/d/e/1FAIpQLSdusHuOtzj7-xpTQdZxslH3j9LVmbmNN32_s_Yz7PFiWf349Q/formResponse";
 
-const ageGroups = ["13-18", "18-24", "24-35", "35+"];
+const ageGroups = ["18-24", "24-35", "35+"];
 const regions = ["United States", "Asia", "Europe", "Other"];
 const fastTrackOptions = [
   "IMO, IPhO, IChO, IOI, or IBO Gold Medal",
@@ -163,7 +163,7 @@ const fastTrackOptions = [
   "None of the above",
 ];
 const developmentGoals = ["Academic", "Career", "Entrepreneurship", "Lifelong Learning"];
-const availabilityOptions = ["Less than 2 hours", "2-5 hours", "5-10 hours", "More than 10 hours"];
+const availabilityOptions = ["30 minutes", "1 hour", "2 hours", "2+ hours"];
 
 const footerGroups = [
   ["Product", "Capability Profile", "Judgment Sessions", "Opportunity Routing"],
@@ -1068,8 +1068,11 @@ function PilotRecruitmentPage() {
                       <textarea name="entry.264859645" placeholder="Short answer" />
                     </label>
                     <label className="field-wide">
-                      How would you like to contribute to the NOVARA community?
-                      <textarea name="entry.836059629" placeholder="Short answer" />
+                      What would you like to explore or share with other early Novara participants?
+                      <textarea
+                        name="entry.836059629"
+                        placeholder="Topics you are curious about, skills you are developing, projects you are building, or conversations you would enjoy having with other motivated people."
+                      />
                     </label>
                     <label className="field-wide">
                       Optional Bonus
@@ -1096,6 +1099,16 @@ function PilotRecruitmentPage() {
                         </label>
                       ))}
                     </fieldset>
+                    <label className="checkbox-field field-wide consent-field">
+                      <input required type="checkbox" />
+                      <span>
+                        I confirm I am 18+ and consent to Novara collecting this information for the pilot. *
+                      </span>
+                    </label>
+                    <p className="pilot-privacy-note field-wide">
+                      Novara will use this information only to review pilot participation and related follow-up.
+                      For privacy questions, contact <a href="mailto:aaron@novara.tech">aaron@novara.tech</a>.
+                    </p>
                   </div>
                 </div>
               </div>

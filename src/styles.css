@@ -1646,6 +1646,23 @@ input {
   line-height: 22px;
 }
 
+.pilot-google-form .consent-field {
+  background: color-mix(in srgb, var(--accent-cyan) 11%, var(--surface));
+}
+
+.pilot-google-form .pilot-privacy-note {
+  margin: -4px 0 0;
+  color: rgba(6, 19, 30, 0.66);
+  font-size: 13px;
+  line-height: 20px;
+}
+
+.pilot-google-form .pilot-privacy-note a {
+  color: #06131e;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 .pilot-form-controls {
   display: flex;
   gap: 10px;
