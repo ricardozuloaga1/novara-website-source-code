@@ -1296,7 +1296,7 @@ function StayInLoop() {
           }}
         >
           <input type="hidden" name="form-name" value="novara-contact" />
-          <input type="hidden" name="contact_destination" value="ricardo@novara.tech" />
+          <input type="hidden" name="contact_destination" value="aaron@novara.tech, ricardo@novara.tech" />
           <input type="hidden" name="subject" value="New Novara contact inquiry" />
           <label className="hidden-field">
             Do not fill this out
@@ -1345,7 +1345,11 @@ function StayInLoop() {
             aria-live="polite"
           >
             <span>{formError ? "Not sent." : "Received."}</span>
-            <p>{formError ? "Please email ricardo@novara.tech directly." : "We’ll follow up by email."}</p>
+            <p>
+              {formError
+                ? "Please email aaron@novara.tech and ricardo@novara.tech directly."
+                : "We’ll follow up by email."}
+            </p>
           </div>
         </form>
       </div>
