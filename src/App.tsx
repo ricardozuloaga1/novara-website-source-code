@@ -1337,7 +1337,7 @@ function StayInLoop() {
             <input name="city_region" placeholder="City or region" type="text" required />
           </label>
           <label className="context-field">
-            Additional context
+            Additional context (optional)
             <textarea
               name="message"
               placeholder="Anything useful for us to know? Role, organization, what prompted you to reach out, or the best way to follow up."
