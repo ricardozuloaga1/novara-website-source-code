@@ -2156,14 +2156,27 @@ input {
   display: none;
 }
 
+.loop-inner .context-field {
+  grid-column: 1 / -1;
+}
+
 .loop-inner input,
-.loop-inner select {
+.loop-inner select,
+.loop-inner textarea {
   height: 56px;
   border: 1px solid var(--ink);
   border-radius: 5px;
   padding: 0 16px;
   background: var(--surface);
   color: var(--ink);
+  font: inherit;
+}
+
+.loop-inner textarea {
+  min-height: 112px;
+  padding: 16px;
+  line-height: 22px;
+  resize: vertical;
 }
 
 select {
