@@ -702,9 +702,9 @@ function UpcomingPilot() {
           <p>Founding cohort</p>
           <h2>A pilot is being prepared for early college users.</h2>
           <span>
-            Novara is testing early learning experiences with a small founding cohort. The public
-            website remains the main place to understand the company, reach the team, and follow
-            upcoming pilots.
+            Novara is testing early learning experiences with a small founding cohort. Learn what
+            Novara is building, get in touch with the team, and see how the founding cohort is
+            taking shape.
           </span>
           <a className="outline-cta" href="/pilot">
             <span>Ask about the cohort</span>
