@@ -163,7 +163,12 @@ const fastTrackOptions = [
   "None of the above",
 ];
 const developmentGoals = ["Academic", "Career", "Entrepreneurship", "Lifelong Learning"];
-const availabilityOptions = ["30 minutes", "1 hour", "2 hours", "2+ hours"];
+const availabilityOptions = [
+  { label: "30 minutes", value: "Less than 2 hours" },
+  { label: "1 hour", value: "Less than 2 hours" },
+  { label: "2 hours", value: "2-5 hours" },
+  { label: "2+ hours", value: "2-5 hours" },
+];
 
 const footerGroups = [
   ["Product", "Capability Profile", "Judgment Sessions", "Opportunity Routing"],
@@ -728,6 +733,7 @@ function PilotRecruitmentPage() {
   const [activeFormStep, setActiveFormStep] = useState(0);
   const [fastTrackSelections, setFastTrackSelections] = useState<string[]>([]);
   const [developmentSelections, setDevelopmentSelections] = useState<string[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
   const pilotFormSteps = ["Profile", "Signals", "Goals", "Commitment"];
 
@@ -877,25 +883,43 @@ function PilotRecruitmentPage() {
             className="pilot-google-form"
             method="post"
             ref={formRef}
-            target="pilot-form-submit-frame"
-            onSubmit={(event) => {
+            onSubmit={async (event) => {
               if (activeFormStep !== pilotFormSteps.length - 1) {
                 event.preventDefault();
                 goToNextFormStep();
                 return;
               }
+              event.preventDefault();
               if (!fastTrackSelections.length || !developmentSelections.length) {
-                event.preventDefault();
                 setSubmitted(false);
                 setFormError("Please complete the required checkbox questions before submitting.");
                 return;
               }
               setFormError("");
-              setSubmitted(true);
+              setIsSubmitting(true);
+              const form = event.currentTarget;
+              try {
+                await fetch(pilotFormPostUrl, {
+                  method: "POST",
+                  body: new FormData(form),
+                  mode: "no-cors",
+                });
+                setSubmitted(true);
+                setFastTrackSelections([]);
+                setDevelopmentSelections([]);
+                setActiveFormStep(0);
+                form.reset();
+              } catch {
+                setSubmitted(false);
+                setFormError("We could not send your application. Please try again.");
+              } finally {
+                setIsSubmitting(false);
+              }
             }}
           >
             <input name="fvv" type="hidden" value="1" />
             <input name="pageHistory" type="hidden" value="0" />
+            <input name="entry.1311292733" type="hidden" value="Website direct signup" />
             {submitted ? (
               <div className="pilot-success-panel" role="status" aria-live="polite">
                 <div className="pilot-success-mark" aria-hidden="true">
@@ -944,10 +968,6 @@ function PilotRecruitmentPage() {
                     <label>
                       Full Name *
                       <input name="entry.639440409" placeholder="Your full name" required type="text" />
-                    </label>
-                    <label>
-                      Referred by *
-                      <input name="entry.1311292733" placeholder="Name or source" required type="text" />
                     </label>
                     <label>
                       Email Address *
@@ -1084,9 +1104,9 @@ function PilotRecruitmentPage() {
                     <fieldset className="field-wide option-field">
                       <legend>Weekly time availability for product engagement *</legend>
                       {availabilityOptions.map((option) => (
-                        <label className="checkbox-field" key={option}>
-                          <input name="entry.963156267" required type="radio" value={option} />
-                          <span>{option}</span>
+                        <label className="checkbox-field" key={option.label}>
+                          <input name="entry.963156267" required type="radio" value={option.value} />
+                          <span>{option.label}</span>
                         </label>
                       ))}
                     </fieldset>
@@ -1107,7 +1127,8 @@ function PilotRecruitmentPage() {
                     </label>
                     <p className="pilot-privacy-note field-wide">
                       Novara will use this information only to review pilot participation and related follow-up.
-                      For privacy questions, contact <a href="mailto:aaron@novara.tech">aaron@novara.tech</a>.
+                      For privacy questions, contact <a href="mailto:aaron@novara.tech">aaron@novara.tech</a> or{" "}
+                      <a href="mailto:ricardo@novara.tech">ricardo@novara.tech</a>.
                     </p>
                   </div>
                 </div>
@@ -1126,7 +1147,9 @@ function PilotRecruitmentPage() {
                 Back
               </button>
               {activeFormStep === pilotFormSteps.length - 1 ? (
-                <button type="submit">Submit application</button>
+                <button type="submit" disabled={isSubmitting}>
+                  {isSubmitting ? "Sending application" : "Submit application"}
+                </button>
               ) : (
                 <button type="button" onClick={goToNextFormStep}>
                   Continue
@@ -1138,11 +1161,6 @@ function PilotRecruitmentPage() {
             </p>
               </>
             )}
-            <iframe
-              className="hidden-submit-frame"
-              name="pilot-form-submit-frame"
-              title="Pilot application submission"
-            />
           </form>
         </div>
       </section>

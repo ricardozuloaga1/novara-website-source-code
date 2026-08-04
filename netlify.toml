@@ -3,16 +3,6 @@
   publish = "dist"
 
 [[redirects]]
-  from = "/pilot"
-  to = "https://novara-pilot-testing.rickyzulo.chatgpt.site/"
-  status = 302
-
-[[redirects]]
-  from = "/pilot/*"
-  to = "https://novara-pilot-testing.rickyzulo.chatgpt.site/:splat"
-  status = 302
-
-[[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
