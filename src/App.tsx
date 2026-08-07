@@ -195,6 +195,8 @@ const easeInOutQuad = (value: number) =>
 const squigglePathData =
   "M-20 221 C39 221 77 222 117 216 C78 129 135 58 208 76 C295 96 287 204 215 215 C147 225 124 170 162 143 C207 112 256 172 220 235 C187 292 98 306 126 247 C151 194 249 182 282 219 C322 264 258 344 204 337 C136 329 99 243 153 204 C217 157 297 175 316 237 C334 296 269 343 233 296 C199 252 260 203 310 173 C363 141 404 103 448 122 C492 141 468 220 446 271 C426 317 474 322 499 277 C529 223 538 119 596 60 C643 10 698 19 694 98 C689 188 596 260 585 328 C574 389 659 394 711 338 C746 301 676 276 679 229 C682 178 741 109 790 130 C842 152 806 246 777 276 C742 312 816 332 842 282 C864 241 852 202 878 205 C901 208 887 277 902 311 C920 352 984 344 965 286 C949 236 886 180 908 145 C936 101 1017 142 1039 200 C1066 273 1102 309 1172 286 C1232 266 1242 202 1281 202 C1320 202 1297 277 1329 299 C1374 329 1448 295 1484 244 C1519 206 1578 207 1646 207 C1712 207 1768 207 1858 207";
 
+const minimumAnimatedSquiggleZoom = 0.7;
+
 const pathSpreadOffsets = [-120, -72, -28, 28, 72, 120];
 const pathVerticalOffsets = [16, -10, 12, -12, 10, -16];
 
@@ -321,21 +323,33 @@ function SquiggleLine({ onLightChange }: { onLightChange: (isOn: boolean) => voi
       const viewportHeight = window.innerHeight || 1;
       const sectionTop = section.getBoundingClientRect().top + window.scrollY;
       const sectionHeight = section.getBoundingClientRect().height;
-      const startScroll = Math.max(0, sectionTop - viewportHeight * 0.55);
+      const desiredStartScroll = Math.max(0, sectionTop - viewportHeight * 0.55);
       const baseEndScroll = sectionTop + sectionHeight * 0.7;
-      const endScroll = startScroll + (baseEndScroll - startScroll) / 2.16;
+      const desiredEndScroll = desiredStartScroll + (baseEndScroll - desiredStartScroll) / 2.16;
+      const maximumScroll = Math.max(
+        0,
+        document.documentElement.scrollHeight - viewportHeight,
+      );
+      const endScroll = Math.min(desiredEndScroll, maximumScroll);
+      const startScroll = Math.min(desiredStartScroll, Math.max(0, endScroll - 1));
       const scrollRange = Math.max(1, endScroll - startScroll);
-      const viewportWidth = window.innerWidth || window.visualViewport?.width || 1;
-      const viewportToScreenRatio = viewportWidth / Math.max(1, window.screen.width);
-      const shouldResolveWideLayout = viewportWidth >= 2200 || viewportToScreenRatio >= 1.7;
+      const viewportWidth = window.visualViewport?.width || window.innerWidth || 1;
+      // Desktop browsers expose no page-zoom API. The browser's outer window stays
+      // in screen pixels while the CSS viewport grows as the page is zoomed out,
+      // so this ratio tracks effective zoom without confusing a large monitor for
+      // a low zoom level.
+      const effectiveZoom = window.outerWidth > 0
+        ? window.outerWidth / Math.max(1, viewportWidth)
+        : 1;
+      const shouldResolveLowZoom = effectiveZoom < minimumAnimatedSquiggleZoom;
       const rawProgress = (window.scrollY - startScroll) / scrollRange;
       const progress = Math.max(0, Math.min(1, rawProgress));
-      const visualProgress = reduceMotion || shouldResolveWideLayout
+      const visualProgress = reduceMotion || shouldResolveLowZoom
         ? 1
         : progress >= 0.985 ? 1 : progress;
       const activeLength = pathLength * visualProgress;
 
-      if (shouldResolveWideLayout) {
+      if (shouldResolveLowZoom) {
         path.style.strokeDasharray = "none";
         path.style.strokeDashoffset = "0";
       } else {
