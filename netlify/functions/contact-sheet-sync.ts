@@ -11,21 +11,38 @@ type Submission = {
 
 export default async (request: Request, _context: Context) => {
   const requestUrl = new URL(request.url);
-  const expectedSecret = Netlify.env.get("FORM_SYNC_SECRET");
-  const googleReceiverUrl = Netlify.env.get("GOOGLE_FORM_SYNC_URL");
+  const target = requestUrl.searchParams.get("target");
+  let googleReceiverUrl: URL;
+
+  try {
+    googleReceiverUrl = new URL(target ?? "");
+  } catch {
+    return Response.json({ ok: false, error: "unauthorized" }, { status: 401 });
+  }
 
   if (
-    !expectedSecret ||
-    requestUrl.searchParams.get("key") !== expectedSecret
+    googleReceiverUrl.protocol !== "https:" ||
+    googleReceiverUrl.hostname !== "script.google.com" ||
+    !googleReceiverUrl.pathname.startsWith("/macros/s/") ||
+    !googleReceiverUrl.pathname.endsWith("/exec") ||
+    !googleReceiverUrl.searchParams.has("key")
   ) {
     return Response.json({ ok: false, error: "unauthorized" }, { status: 401 });
   }
 
-  if (!googleReceiverUrl) {
-    return Response.json(
-      { ok: false, error: "sync receiver is not configured" },
-      { status: 503 },
-    );
+  const targetDigest = await crypto.subtle.digest(
+    "SHA-256",
+    new TextEncoder().encode(googleReceiverUrl.toString()),
+  );
+  const targetFingerprint = Array.from(new Uint8Array(targetDigest))
+    .map((byte) => byte.toString(16).padStart(2, "0"))
+    .join("");
+
+  if (
+    targetFingerprint !==
+    "4869f54575b38dab0b45ae0cd2985dae7e5d52f3299080c4ec64d2f51754285f"
+  ) {
+    return Response.json({ ok: false, error: "unauthorized" }, { status: 401 });
   }
 
   const body = await request.text();
@@ -48,7 +65,7 @@ export default async (request: Request, _context: Context) => {
   }
 
   try {
-    const googleResponse = await fetch(googleReceiverUrl, {
+    const googleResponse = await fetch(googleReceiverUrl.toString(), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body,
