@@ -304,20 +304,18 @@ function Hero() {
 
 function SquiggleLine({ onLightChange }: { onLightChange: (isOn: boolean) => void }) {
   const sectionRef = useRef<HTMLElement | null>(null);
-  const pathRef = useRef<SVGPathElement | null>(null);
+  const progressRectRef = useRef<SVGRectElement | null>(null);
   const lastLightStateRef = useRef(false);
 
   useEffect(() => {
     const section = sectionRef.current;
-    const path = pathRef.current;
-    if (!section || !path) return;
+    const progressRect = progressRectRef.current;
+    if (!section || !progressRect) return;
 
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const pathLength = path.getTotalLength();
     let frame = 0;
 
-    path.style.strokeDasharray = `${pathLength}`;
-    path.style.strokeDashoffset = `${pathLength}`;
+    progressRect.setAttribute("width", "0");
 
     const render = () => {
       const viewportHeight = window.innerHeight || 1;
@@ -347,15 +345,7 @@ function SquiggleLine({ onLightChange }: { onLightChange: (isOn: boolean) => voi
       const visualProgress = reduceMotion || shouldResolveLowZoom
         ? 1
         : progress >= 0.985 ? 1 : progress;
-      const activeLength = pathLength * visualProgress;
-
-      if (shouldResolveLowZoom) {
-        path.style.strokeDasharray = "none";
-        path.style.strokeDashoffset = "0";
-      } else {
-        path.style.strokeDasharray = `${pathLength}`;
-        path.style.strokeDashoffset = `${pathLength - activeLength}`;
-      }
+      progressRect.setAttribute("width", `${1900 * visualProgress}`);
       const isLightOn = visualProgress >= 1;
       section.classList.toggle("is-complete", isLightOn);
 
@@ -388,13 +378,18 @@ function SquiggleLine({ onLightChange }: { onLightChange: (isOn: boolean) => voi
   return (
     <section className="squiggle-section" ref={sectionRef} aria-hidden="true">
       <svg className="squiggle-line" fill="none" viewBox="0 0 2110 415">
+        <defs>
+          <clipPath id="squiggle-progress-clip" clipPathUnits="userSpaceOnUse">
+            <rect ref={progressRectRef} x="-20" y="-20" width="0" height="455" />
+          </clipPath>
+        </defs>
         <path
           className="squiggle-guide"
           d={squigglePathData}
         />
         <path
           className="squiggle-path"
-          ref={pathRef}
+          clipPath="url(#squiggle-progress-clip)"
           d={squigglePathData}
         />
         <g className="squiggle-target-mark">
