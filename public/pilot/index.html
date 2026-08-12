@@ -261,29 +261,6 @@
         outline-offset: 1px;
       }
 
-      .form-row {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 14px;
-      }
-
-      .consent {
-        display: grid;
-        grid-template-columns: 20px 1fr;
-        gap: 10px;
-        align-items: start;
-        margin-top: 2px;
-        color: rgba(8, 40, 61, 0.72);
-        font-size: 13px;
-        line-height: 1.4;
-      }
-
-      .consent input {
-        width: 18px;
-        height: 18px;
-        margin-top: 2px;
-      }
-
       .submit-button {
         display: flex;
         align-items: center;
@@ -472,7 +449,6 @@
           order: -1;
         }
 
-        .form-row,
         .info-grid {
           grid-template-columns: 1fr;
         }
@@ -548,7 +524,7 @@
               <div class="signup-intro">
                 <span class="kicker">Apply in under one minute</span>
                 <h2>Join the pilot.</h2>
-                <p>Share basic contact information. If there is a fit, Novara will follow up by email.</p>
+                <p>Share your contact information. Novara will reach out shortly by email.</p>
               </div>
 
               <form
@@ -570,6 +546,8 @@
                 <input type="hidden" name="entry.1946805303" value="Not collected in quick signup" />
                 <input type="hidden" name="entry.963156267" value="Less than 2 hours" />
                 <input type="hidden" name="entry.1031542068" value="Yes, I am willing to participate" />
+                <input type="hidden" name="entry.129208249" value="18-24" />
+                <input type="hidden" name="entry.1772927419" value="Not collected in quick signup" />
 
                 <label>
                   Full name
@@ -581,39 +559,6 @@
                   <input name="entry.1289368796" placeholder="you@example.com" required type="email" />
                 </label>
 
-                <div class="form-row">
-                  <label>
-                    Age group
-                    <select name="entry.129208249" required>
-                      <option value="" disabled selected>Select one</option>
-                      <option value="18-24">18-24</option>
-                      <option value="24-35">24-35</option>
-                      <option value="35+">35+</option>
-                    </select>
-                  </label>
-
-                  <label>
-                    Region
-                    <select name="entry.1772927419" required>
-                      <option value="" disabled selected>Select one</option>
-                      <option value="United States">United States</option>
-                      <option value="Latin America">Latin America</option>
-                      <option value="Europe">Europe</option>
-                      <option value="Asia">Asia</option>
-                      <option value="Africa">Africa</option>
-                      <option value="Other">Other</option>
-                    </select>
-                  </label>
-                </div>
-
-                <label class="consent">
-                  <input required type="checkbox" />
-                  <span>
-                    I confirm I am 18+ and consent to Novara collecting this information for pilot
-                    review and follow-up.
-                  </span>
-                </label>
-
                 <button class="submit-button" type="submit">
                   <span>Submit interest</span>
                   <span class="arrow" aria-hidden="true">→</span>
@@ -623,7 +568,7 @@
               <div class="status-panel" role="status" aria-live="polite">
                 <div class="success-mark" aria-hidden="true"></div>
                 <strong>Received.</strong>
-                <p>Thank you. Novara will follow up by email if there is a fit for the pilot cohort.</p>
+                <p>Thank you. Novara will reach out shortly by email.</p>
               </div>
             </div>
           </aside>
