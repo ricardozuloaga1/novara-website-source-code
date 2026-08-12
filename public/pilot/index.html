@@ -212,6 +212,17 @@
         line-height: 1.45;
       }
 
+      .signup-card.is-complete .signup-card-inner {
+        min-height: 672px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .signup-card.is-complete .signup-intro,
+      .signup-card.is-complete .quick-form {
+        display: none;
+      }
+
       .quick-form {
         display: grid;
         gap: 16px;
@@ -311,27 +322,60 @@
 
       .status-panel {
         display: none;
-        margin-top: 22px;
+        flex: 1;
+        min-height: 430px;
+        margin-top: 0;
         border: 2px solid rgba(92, 206, 223, 0.7);
         border-radius: 10px;
-        background: linear-gradient(135deg, rgba(92, 206, 223, 0.2), rgba(231, 139, 52, 0.22));
-        padding: 22px;
+        background:
+          radial-gradient(circle at 18% 20%, rgba(92, 206, 223, 0.28), transparent 28%),
+          linear-gradient(135deg, rgba(92, 206, 223, 0.2), rgba(231, 139, 52, 0.26));
+        padding: clamp(28px, 5vw, 46px);
+        align-items: center;
+        justify-content: center;
+        text-align: center;
       }
 
       .status-panel.is-visible {
-        display: block;
+        display: flex;
+        flex-direction: column;
       }
 
       .status-panel strong {
         display: block;
-        margin-bottom: 6px;
+        margin-bottom: 12px;
         font-family: Georgia, "Times New Roman", serif;
-        font-size: 30px;
+        font-size: clamp(48px, 7vw, 78px);
+        line-height: 0.95;
       }
 
       .status-panel p {
+        max-width: 360px;
         margin: 0;
         color: rgba(8, 40, 61, 0.75);
+        font-size: 18px;
+        line-height: 1.45;
+      }
+
+      .success-mark {
+        width: 86px;
+        height: 86px;
+        border: 2px solid var(--ink);
+        border-radius: 999px;
+        display: grid;
+        place-items: center;
+        margin-bottom: 24px;
+        background: var(--orange);
+        box-shadow: 0 14px 34px rgba(8, 40, 61, 0.18);
+      }
+
+      .success-mark::before {
+        content: "";
+        width: 32px;
+        height: 18px;
+        border-left: 5px solid var(--ink);
+        border-bottom: 5px solid var(--ink);
+        transform: rotate(-45deg) translate(2px, -3px);
       }
 
       .below {
@@ -501,9 +545,11 @@
 
           <aside class="signup-card" aria-label="Pilot signup form">
             <div class="signup-card-inner">
-              <span class="kicker">Apply in under one minute</span>
-              <h2>Join the pilot.</h2>
-              <p>Share basic contact information. If there is a fit, Novara will follow up by email.</p>
+              <div class="signup-intro">
+                <span class="kicker">Apply in under one minute</span>
+                <h2>Join the pilot.</h2>
+                <p>Share basic contact information. If there is a fit, Novara will follow up by email.</p>
+              </div>
 
               <form
                 class="quick-form"
@@ -575,6 +621,7 @@
               </form>
 
               <div class="status-panel" role="status" aria-live="polite">
+                <div class="success-mark" aria-hidden="true"></div>
                 <strong>Received.</strong>
                 <p>Thank you. Novara will follow up by email if there is a fit for the pilot cohort.</p>
               </div>
@@ -616,6 +663,7 @@
     <script>
       (() => {
         const form = document.querySelector(".quick-form");
+        const signupCard = document.querySelector(".signup-card");
         const statusPanel = document.querySelector(".status-panel");
         const submitButton = document.querySelector(".submit-button");
         let hasTrackedFormStart = false;
@@ -647,7 +695,7 @@
               mode: "no-cors",
             });
 
-            form.hidden = true;
+            signupCard.classList.add("is-complete");
             statusPanel.classList.add("is-visible");
             trackEvent("pilot_form_submit_success");
           } catch {
