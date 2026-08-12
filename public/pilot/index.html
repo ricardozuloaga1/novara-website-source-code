@@ -168,6 +168,34 @@
         letter-spacing: 0.05em;
       }
 
+      .reward-list {
+        display: grid;
+        gap: 10px;
+        margin: 18px 0 6px;
+      }
+
+      .reward-item {
+        border: 1.5px solid rgba(8, 40, 61, 0.14);
+        border-radius: 8px;
+        background: rgba(231, 139, 52, 0.13);
+        padding: 14px 16px;
+      }
+
+      .reward-item strong {
+        display: block;
+        margin-bottom: 3px;
+        color: var(--orange-dark);
+        font-size: 18px;
+        line-height: 1.1;
+      }
+
+      .reward-item span {
+        display: block;
+        color: rgba(8, 40, 61, 0.72);
+        font-size: 14px;
+        line-height: 1.35;
+      }
+
       .signup-card {
         position: relative;
         border: 2px solid rgba(255, 255, 255, 0.26);
@@ -507,15 +535,16 @@
         <section class="hero" id="top">
           <div>
             <p class="eyebrow">Novara pilot · Early access</p>
-            <h1>Be early. Help shape what Novara becomes.</h1>
+            <h1>Know Your Strengths. Build What Matters Next.</h1>
             <p class="hero-copy">
               Novara is building a capability platform for the AI era. Join the first pilot group
               to test early learning experiences and help shape the product before launch.
             </p>
             <div class="hero-points" aria-label="Pilot highlights">
-              <span>35 college places</span>
+              <span>35 founding cohort seats</span>
               <span>Early capability profile</span>
-              <span>Prize money available</span>
+              <span>$10 guaranteed reward</span>
+              <span>Gift-card drawing</span>
             </div>
           </div>
 
@@ -525,6 +554,16 @@
                 <span class="kicker">Apply in under one minute</span>
                 <h2>Join the pilot.</h2>
                 <p>Share your contact information. Novara will reach out shortly by email.</p>
+                <div class="reward-list" aria-label="Pilot rewards">
+                  <div class="reward-item">
+                    <strong>$10 guaranteed</strong>
+                    <span>For accepted pilot testers who complete the required testing and exit survey.</span>
+                  </div>
+                  <div class="reward-item">
+                    <strong>Ten $25 gift cards</strong>
+                    <span>Awarded by drawing among the first 100 complete and eligible applicants.</span>
+                  </div>
+                </div>
               </div>
 
               <form
