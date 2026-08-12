@@ -158,6 +158,9 @@
       }
 
       .hero-points span {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
         border: 1px solid rgba(255, 255, 255, 0.26);
         border-radius: 999px;
         padding: 10px 14px;
@@ -166,6 +169,14 @@
         font-weight: 800;
         text-transform: uppercase;
         letter-spacing: 0.05em;
+      }
+
+      .hero-points svg {
+        width: 17px;
+        height: 17px;
+        flex: 0 0 auto;
+        stroke: var(--cyan);
+        stroke-width: 2;
       }
 
       .reward-list {
@@ -541,10 +552,39 @@
               to test early learning experiences and help shape the product before launch.
             </p>
             <div class="hero-points" aria-label="Pilot highlights">
-              <span>35 founding cohort seats</span>
-              <span>Early capability profile</span>
-              <span>$10 guaranteed reward</span>
-              <span>Gift-card drawing</span>
+              <span>
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none">
+                  <path d="M8 7a4 4 0 1 1 8 0 4 4 0 0 1-8 0Z" />
+                  <path d="M4 21a8 8 0 0 1 16 0" />
+                </svg>
+                35 founding cohort seats
+              </span>
+              <span>
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none">
+                  <path d="M4 19V5a2 2 0 0 1 2-2h10l4 4v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z" />
+                  <path d="M14 3v5h5" />
+                  <path d="M8 13h8" />
+                  <path d="M8 17h5" />
+                </svg>
+                Early capability profile
+              </span>
+              <span>
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 2v20" />
+                  <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7H14a3.5 3.5 0 0 1 0 7H6" />
+                </svg>
+                First 100 get $10
+              </span>
+              <span>
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none">
+                  <path d="M20 12v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8" />
+                  <path d="M2 7h20v5H2z" />
+                  <path d="M12 22V7" />
+                  <path d="M12 7H8.5a2.5 2.5 0 1 1 0-5C11 2 12 7 12 7Z" />
+                  <path d="M12 7h3.5a2.5 2.5 0 1 0 0-5C13 2 12 7 12 7Z" />
+                </svg>
+                Gift-card awards
+              </span>
             </div>
           </div>
 
@@ -556,12 +596,12 @@
                 <p>Share your contact information. Novara will reach out shortly by email.</p>
                 <div class="reward-list" aria-label="Pilot rewards">
                   <div class="reward-item">
-                    <strong>$10 guaranteed</strong>
-                    <span>For accepted pilot testers who complete the required testing and exit survey.</span>
+                    <strong>$10 completion award</strong>
+                    <span>Available to the first 100 accepted pilot testers who complete testing and the exit survey.</span>
                   </div>
                   <div class="reward-item">
-                    <strong>Ten $25 gift cards</strong>
-                    <span>Awarded by drawing among the first 100 complete and eligible applicants.</span>
+                    <strong>Ten $25 gift-card awards</strong>
+                    <span>Additional awards available by drawing among the first 100 complete and eligible participants.</span>
                   </div>
                 </div>
               </div>
