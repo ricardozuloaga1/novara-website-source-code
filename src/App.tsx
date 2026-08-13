@@ -1,5 +1,22 @@
 import { useEffect, useRef, useState } from "react";
 
+declare global {
+  interface Window {
+    gtag?: (command: "event", eventName: string, eventParams?: Record<string, unknown>) => void;
+  }
+}
+
+function trackAnalyticsEvent(eventName: string, eventParams: Record<string, unknown> = {}) {
+  if (typeof window === "undefined" || typeof window.gtag !== "function") {
+    return;
+  }
+
+  window.gtag("event", eventName, {
+    page_path: window.location.pathname,
+    ...eventParams,
+  });
+}
+
 const capabilityPaths = [
   {
     title: "Capability Profile",
@@ -195,6 +212,8 @@ const easeInOutQuad = (value: number) =>
 const squigglePathData =
   "M-20 221 C39 221 77 222 117 216 C78 129 135 58 208 76 C295 96 287 204 215 215 C147 225 124 170 162 143 C207 112 256 172 220 235 C187 292 98 306 126 247 C151 194 249 182 282 219 C322 264 258 344 204 337 C136 329 99 243 153 204 C217 157 297 175 316 237 C334 296 269 343 233 296 C199 252 260 203 310 173 C363 141 404 103 448 122 C492 141 468 220 446 271 C426 317 474 322 499 277 C529 223 538 119 596 60 C643 10 698 19 694 98 C689 188 596 260 585 328 C574 389 659 394 711 338 C746 301 676 276 679 229 C682 178 741 109 790 130 C842 152 806 246 777 276 C742 312 816 332 842 282 C864 241 852 202 878 205 C901 208 887 277 902 311 C920 352 984 344 965 286 C949 236 886 180 908 145 C936 101 1017 142 1039 200 C1066 273 1102 309 1172 286 C1232 266 1242 202 1281 202 C1320 202 1297 277 1329 299 C1374 329 1448 295 1484 244 C1519 206 1578 207 1646 207 C1712 207 1768 207 1858 207";
 
+const minimumAnimatedSquiggleZoom = 0.7;
+
 const pathSpreadOffsets = [-120, -72, -28, 28, 72, 120];
 const pathVerticalOffsets = [16, -10, 12, -12, 10, -16];
 
@@ -232,7 +251,11 @@ function Header({ isPilot = false }: { isPilot?: boolean }) {
         </a>
         )}
         {isPilot ? null : (
-        <a className="apply-block" href="/#contact">
+        <a
+          className="apply-block"
+          href="/#contact"
+          onClick={() => trackAnalyticsEvent("click_contact_header")}
+        >
           Contact
         </a>
         )}
@@ -242,7 +265,11 @@ function Header({ isPilot = false }: { isPilot?: boolean }) {
           ) : (
           <nav className="main-nav" aria-label="Primary navigation">
             {links.slice(0, 5).map(([label, href]) => (
-              <a href={href} key={href}>
+              <a
+                href={href}
+                key={href}
+                onClick={() => trackAnalyticsEvent("click_nav_link", { nav_label: label })}
+              >
                 {label}
               </a>
             ))}
@@ -264,7 +291,14 @@ function Header({ isPilot = false }: { isPilot?: boolean }) {
           {isMenuOpen ? (
             <div className="menu-panel">
               {links.map(([label, href]) => (
-                <a href={href} key={href} onClick={() => setIsMenuOpen(false)}>
+                <a
+                  href={href}
+                  key={href}
+                  onClick={() => {
+                    trackAnalyticsEvent("click_mobile_nav_link", { nav_label: label });
+                    setIsMenuOpen(false);
+                  }}
+                >
                   {label}
                 </a>
               ))}
@@ -288,11 +322,19 @@ function Hero() {
         understand their strengths, and connect credible capability signals to real opportunities.
       </p>
       <div className="hero-actions">
-        <a className="outline-cta primary" href="/#contact">
+        <a
+          className="outline-cta primary"
+          href="/#contact"
+          onClick={() => trackAnalyticsEvent("click_hero_contact")}
+        >
           <span>Get in touch</span>
           <ArrowIcon />
         </a>
-        <a className="outline-cta" href="/#why">
+        <a
+          className="outline-cta"
+          href="/#why"
+          onClick={() => trackAnalyticsEvent("click_hero_how_it_works")}
+        >
           <span>See how it works</span>
         </a>
       </div>
@@ -302,46 +344,48 @@ function Hero() {
 
 function SquiggleLine({ onLightChange }: { onLightChange: (isOn: boolean) => void }) {
   const sectionRef = useRef<HTMLElement | null>(null);
-  const pathRef = useRef<SVGPathElement | null>(null);
+  const progressRectRef = useRef<SVGRectElement | null>(null);
   const lastLightStateRef = useRef(false);
 
   useEffect(() => {
     const section = sectionRef.current;
-    const path = pathRef.current;
-    if (!section || !path) return;
+    const progressRect = progressRectRef.current;
+    if (!section || !progressRect) return;
 
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const pathLength = path.getTotalLength();
     let frame = 0;
 
-    path.style.strokeDasharray = `${pathLength}`;
-    path.style.strokeDashoffset = `${pathLength}`;
+    progressRect.setAttribute("width", "0");
 
     const render = () => {
       const viewportHeight = window.innerHeight || 1;
       const sectionTop = section.getBoundingClientRect().top + window.scrollY;
       const sectionHeight = section.getBoundingClientRect().height;
-      const startScroll = Math.max(0, sectionTop - viewportHeight * 0.55);
+      const desiredStartScroll = Math.max(0, sectionTop - viewportHeight * 0.55);
       const baseEndScroll = sectionTop + sectionHeight * 0.7;
-      const endScroll = startScroll + (baseEndScroll - startScroll) / 2.16;
+      const desiredEndScroll = desiredStartScroll + (baseEndScroll - desiredStartScroll) / 2.16;
+      const maximumScroll = Math.max(
+        0,
+        document.documentElement.scrollHeight - viewportHeight,
+      );
+      const endScroll = Math.min(desiredEndScroll, maximumScroll);
+      const startScroll = Math.min(desiredStartScroll, Math.max(0, endScroll - 1));
       const scrollRange = Math.max(1, endScroll - startScroll);
-      const viewportWidth = window.innerWidth || window.visualViewport?.width || 1;
-      const viewportToScreenRatio = viewportWidth / Math.max(1, window.screen.width);
-      const shouldResolveWideLayout = viewportWidth >= 2200 || viewportToScreenRatio >= 1.7;
+      const viewportWidth = window.visualViewport?.width || window.innerWidth || 1;
+      // Desktop browsers expose no page-zoom API. The browser's outer window stays
+      // in screen pixels while the CSS viewport grows as the page is zoomed out,
+      // so this ratio tracks effective zoom without confusing a large monitor for
+      // a low zoom level.
+      const effectiveZoom = window.outerWidth > 0
+        ? window.outerWidth / Math.max(1, viewportWidth)
+        : 1;
+      const shouldResolveLowZoom = effectiveZoom < minimumAnimatedSquiggleZoom;
       const rawProgress = (window.scrollY - startScroll) / scrollRange;
       const progress = Math.max(0, Math.min(1, rawProgress));
-      const visualProgress = reduceMotion || shouldResolveWideLayout
+      const visualProgress = reduceMotion || shouldResolveLowZoom
         ? 1
         : progress >= 0.985 ? 1 : progress;
-      const activeLength = pathLength * visualProgress;
-
-      if (shouldResolveWideLayout) {
-        path.style.strokeDasharray = "none";
-        path.style.strokeDashoffset = "0";
-      } else {
-        path.style.strokeDasharray = `${pathLength}`;
-        path.style.strokeDashoffset = `${pathLength - activeLength}`;
-      }
+      progressRect.setAttribute("width", `${1900 * visualProgress}`);
       const isLightOn = visualProgress >= 1;
       section.classList.toggle("is-complete", isLightOn);
 
@@ -374,13 +418,18 @@ function SquiggleLine({ onLightChange }: { onLightChange: (isOn: boolean) => voi
   return (
     <section className="squiggle-section" ref={sectionRef} aria-hidden="true">
       <svg className="squiggle-line" fill="none" viewBox="0 0 2110 415">
+        <defs>
+          <clipPath id="squiggle-progress-clip" clipPathUnits="userSpaceOnUse">
+            <rect ref={progressRectRef} x="-20" y="-20" width="0" height="455" />
+          </clipPath>
+        </defs>
         <path
           className="squiggle-guide"
           d={squigglePathData}
         />
         <path
           className="squiggle-path"
-          ref={pathRef}
+          clipPath="url(#squiggle-progress-clip)"
           d={squigglePathData}
         />
         <g className="squiggle-target-mark">
@@ -509,7 +558,17 @@ function HowToStart() {
       </div>
       <div className="track-cards">
         {tracks.map((track, index) => (
-          <a className="track-card" href="#contact" key={track.title}>
+          <a
+            className="track-card"
+            href="#contact"
+            key={track.title}
+            onClick={() =>
+              trackAnalyticsEvent("click_path_card", {
+                card_title: track.title,
+                card_position: index + 1,
+              })
+            }
+          >
             <span className="track-number">{String(index + 1).padStart(2, "0")}</span>
             <h3>{track.title}</h3>
             <p className="meta">{track.meta}</p>
@@ -518,7 +577,11 @@ function HowToStart() {
         ))}
       </div>
       <div className="center-cta">
-        <a className="outline-cta large" href="#contact">
+        <a
+          className="outline-cta large"
+          href="#contact"
+          onClick={() => trackAnalyticsEvent("click_start_conversation")}
+        >
           <span>Start a conversation</span>
           <ArrowIcon />
         </a>
@@ -673,19 +736,31 @@ function LandingLinks() {
         <h2>Explore Novara</h2>
       </div>
       <div className="landing-link-grid">
-        <a className="landing-link-card why-link" href="#why">
+          <a
+            className="landing-link-card why-link"
+            href="#why"
+            onClick={() => trackAnalyticsEvent("click_explore_card", { card_title: "Why Novara" })}
+          >
           <span>Why Novara</span>
           <h2>The thesis behind the company</h2>
           <p>AI makes information abundant. Novara focuses on the judgment layer that remains scarce.</p>
           <strong>Read the thesis</strong>
         </a>
-        <a className="landing-link-card team-link" href="/team">
+        <a
+          className="landing-link-card team-link"
+          href="/team"
+          onClick={() => trackAnalyticsEvent("click_explore_card", { card_title: "Team" })}
+        >
           <span>Team</span>
           <h2>Who is building it</h2>
           <p>Company stewardship, capability design, partner trust, and long-term operating quality.</p>
           <strong>Open team page</strong>
         </a>
-        <a className="landing-link-card jobs-link" href="/jobs">
+        <a
+          className="landing-link-card jobs-link"
+          href="/jobs"
+          onClick={() => trackAnalyticsEvent("click_explore_card", { card_title: "Recruiting" })}
+        >
           <span>Recruiting</span>
           <h2>Help build the platform</h2>
           <p>Open tracks for people working across product, partnerships, strategy, and operations.</p>
@@ -711,7 +786,11 @@ function UpcomingPilot() {
             Novara is building, get in touch with the team, and see how the founding cohort is
             taking shape.
           </span>
-          <a className="outline-cta" href="/pilot">
+          <a
+            className="outline-cta"
+            href="/pilot"
+            onClick={() => trackAnalyticsEvent("click_pilot_news_cta")}
+          >
             <span>Ask about the cohort</span>
             <ArrowIcon />
           </a>
@@ -735,7 +814,17 @@ function PilotRecruitmentPage() {
   const [developmentSelections, setDevelopmentSelections] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
+  const hasTrackedPilotFormStart = useRef(false);
   const pilotFormSteps = ["Profile", "Signals", "Goals", "Commitment"];
+
+  const trackPilotFormStart = () => {
+    if (hasTrackedPilotFormStart.current) {
+      return;
+    }
+
+    hasTrackedPilotFormStart.current = true;
+    trackAnalyticsEvent("pilot_form_start");
+  };
 
   const toggleSelection = (
     value: string,
@@ -791,7 +880,16 @@ function PilotRecruitmentPage() {
       return;
     }
     setSubmitted(false);
-    setActiveFormStep((step) => Math.min(step + 1, pilotFormSteps.length - 1));
+    setActiveFormStep((step) => {
+      const nextStep = Math.min(step + 1, pilotFormSteps.length - 1);
+      if (nextStep !== step) {
+        trackAnalyticsEvent("pilot_form_step_complete", {
+          completed_step: step + 1,
+          next_step: nextStep + 1,
+        });
+      }
+      return nextStep;
+    });
   };
 
   return (
@@ -810,7 +908,10 @@ function PilotRecruitmentPage() {
               <button
                 className="outline-cta primary"
                 type="button"
-                onClick={() => document.getElementById("pilot-form")?.scrollIntoView({ behavior: "smooth" })}
+                onClick={() => {
+                  trackAnalyticsEvent("click_pilot_start_application");
+                  document.getElementById("pilot-form")?.scrollIntoView({ behavior: "smooth" });
+                }}
               >
                 <span>Start application</span>
                 <ArrowIcon />
@@ -883,6 +984,7 @@ function PilotRecruitmentPage() {
             className="pilot-google-form"
             method="post"
             ref={formRef}
+            onFocus={trackPilotFormStart}
             onSubmit={async (event) => {
               if (activeFormStep !== pilotFormSteps.length - 1) {
                 event.preventDefault();
@@ -890,9 +992,11 @@ function PilotRecruitmentPage() {
                 return;
               }
               event.preventDefault();
+              trackAnalyticsEvent("pilot_form_submit_attempt");
               if (!fastTrackSelections.length || !developmentSelections.length) {
                 setSubmitted(false);
                 setFormError("Please complete the required checkbox questions before submitting.");
+                trackAnalyticsEvent("pilot_form_submit_blocked", { reason: "missing_required_checkbox" });
                 return;
               }
               setFormError("");
@@ -905,6 +1009,7 @@ function PilotRecruitmentPage() {
                   mode: "no-cors",
                 });
                 setSubmitted(true);
+                trackAnalyticsEvent("pilot_form_submit_success");
                 setFastTrackSelections([]);
                 setDevelopmentSelections([]);
                 setActiveFormStep(0);
@@ -912,6 +1017,7 @@ function PilotRecruitmentPage() {
               } catch {
                 setSubmitted(false);
                 setFormError("We could not send your application. Please try again.");
+                trackAnalyticsEvent("pilot_form_submit_error");
               } finally {
                 setIsSubmitting(false);
               }
@@ -947,6 +1053,10 @@ function PilotRecruitmentPage() {
                   type="button"
                   onClick={() => {
                     if (index <= activeFormStep || validateCurrentStep()) {
+                      trackAnalyticsEvent("pilot_form_step_nav_click", {
+                        from_step: activeFormStep + 1,
+                        to_step: index + 1,
+                      });
                       setActiveFormStep(index);
                     }
                   }}
@@ -1270,6 +1380,16 @@ function StayInLoop() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [formError, setFormError] = useState(false);
+  const hasTrackedContactFormStart = useRef(false);
+
+  const trackContactFormStart = () => {
+    if (hasTrackedContactFormStart.current) {
+      return;
+    }
+
+    hasTrackedContactFormStart.current = true;
+    trackAnalyticsEvent("contact_form_start");
+  };
 
   return (
     <section className="loop-section" id="contact">
@@ -1278,6 +1398,7 @@ function StayInLoop() {
         <form
           className="intake-form"
           onChange={() => {
+            trackContactFormStart();
             if (submitted) {
               setSubmitted(false);
             }
@@ -1291,6 +1412,7 @@ function StayInLoop() {
           netlify-honeypot="bot-field"
           onSubmit={async (event) => {
             event.preventDefault();
+            trackAnalyticsEvent("contact_form_submit_attempt");
             const form = event.currentTarget;
             const formData = new FormData(form);
 
@@ -1306,10 +1428,12 @@ function StayInLoop() {
               }
 
               setSubmitted(true);
+              trackAnalyticsEvent("contact_form_submit_success");
               form.reset();
               setEmail("");
             } catch {
               setFormError(true);
+              trackAnalyticsEvent("contact_form_submit_error");
             }
           }}
         >
